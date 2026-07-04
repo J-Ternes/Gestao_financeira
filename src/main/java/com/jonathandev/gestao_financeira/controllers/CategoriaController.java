@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,5 +32,12 @@ public class CategoriaController {
         List<CategoriaResponseDto> categorias = categoriaService.buscarTodasCategorias();
 
         return ResponseEntity.status(HttpStatus.OK).body(categorias);
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity delatarCategoria(@PathVariable UUID id){
+        categoriaService.deletar(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

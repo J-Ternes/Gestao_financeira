@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +39,11 @@ public class CategoriaService {
                 .map(categorias-> new CategoriaResponseDto(categorias.getCategoria()))
                 .toList();
         return responseDto;
+    }
+
+    public void deletar(UUID id){
+        CategoriaModel categoria = categoriaRepository.findById(id).orElseThrow(()-> new CategoriaNotFoundException());
+
+        categoriaRepository.delete(categoria);
     }
 }
