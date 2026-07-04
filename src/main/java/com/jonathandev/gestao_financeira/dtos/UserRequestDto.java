@@ -13,10 +13,6 @@ String nome,
 String email,
 
 @NotBlank(message = "O campo senha é obrigatório")
-String senha,
-
-@NotNull(message = "O campo role é obrigatório")
-UserRole role
-
+String senha
 )
 { }
