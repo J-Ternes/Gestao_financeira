@@ -1,6 +1,7 @@
 package com.jonathandev.gestao_financeira.hendler;
 
 import com.jonathandev.gestao_financeira.dtos.ErrorResponseDto;
+import com.jonathandev.gestao_financeira.exceptions.CategoriaFoundException;
 import com.jonathandev.gestao_financeira.exceptions.EmailFoundException;
 import com.jonathandev.gestao_financeira.exceptions.UserNotFoundException;
 import org.apache.coyote.Response;
@@ -23,5 +24,11 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> userNotFoundHandler (UserNotFoundException userNotFoundException){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(400,"Usuário não encontrado",LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(CategoriaFoundException.class)
+    public ResponseEntity<ErrorResponseDto> categoriaFoundExceptionHandler (CategoriaFoundException categoriaFoundException){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(400, "Categoria já cadastrada", LocalDateTime.now()));
+
     }
 }
