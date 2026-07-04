@@ -40,7 +40,6 @@ public class UserController {
     public ResponseEntity deletarUsuario(@PathVariable UUID id){
     userService.deletar(id);
     return ResponseEntity.noContent().build();
-
     }
 
 

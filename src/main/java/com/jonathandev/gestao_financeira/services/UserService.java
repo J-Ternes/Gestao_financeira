@@ -6,7 +6,6 @@ import com.jonathandev.gestao_financeira.exceptions.UserNotFoundException;
 import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.model.UserRole;
 import com.jonathandev.gestao_financeira.repositories.UserRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +25,10 @@ public class UserService {
         if(user != null) throw new EmailFoundException();
 
         UserModel novoUsuario = new UserModel();
-        user.setNome(dto.nome());
-        user.setEmail(dto.email());
-        user.setSenha(dto.senha());
-        user.setRole(UserRole.USER);
+        novoUsuario.setNome(dto.nome());
+        novoUsuario.setEmail(dto.email());
+        novoUsuario.setSenha(dto.senha());
+        novoUsuario.setRole(UserRole.USER);
 
         return userRepository.save(novoUsuario);
     }
