@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -33,6 +34,13 @@ public class UserController {
     List<UserResponseDto> usuarios = userService.usuariosCadastrados();
 
     return ResponseEntity.status(HttpStatus.OK).body(usuarios);
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity deletarUsuario(@PathVariable UUID id){
+    userService.deletar(id);
+    return ResponseEntity.noContent().build();
+
     }
 
 
