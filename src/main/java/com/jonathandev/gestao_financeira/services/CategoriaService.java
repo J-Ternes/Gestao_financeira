@@ -1,12 +1,16 @@
 package com.jonathandev.gestao_financeira.services;
 
 import com.jonathandev.gestao_financeira.dtos.CategoriaRequestDto;
+import com.jonathandev.gestao_financeira.dtos.CategoriaResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaFoundException;
+import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.repositories.CategoriaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,4 +29,14 @@ public class CategoriaService {
         return categoriaRepository.save(novaCategoria);
     }
 
+    public List<CategoriaResponseDto> buscarTodasCategorias(){
+        List<CategoriaModel> categoriasCadastradas = categoriaRepository.findAll();
+
+        if (categoriasCadastradas == null) throw new CategoriaNotFoundException();
+
+        List<CategoriaResponseDto> responseDto = categoriasCadastradas.stream()
+                .map(categorias-> new CategoriaResponseDto(categorias.getCategoria()))
+                .toList();
+        return responseDto;
+    }
 }
