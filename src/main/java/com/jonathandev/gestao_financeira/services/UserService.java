@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -27,6 +30,12 @@ public class UserService {
         user.setRole(UserRole.USER);
 
         return userRepository.save(novoUsuario);
+    }
+
+    public List<UserResponseDto> usuariosCadastrados (){
+        List<UserModel> usuarios = userRepository.findAll();
+         return usuarios.stream().map(user-> new UserResponseDto(
+                 user.getNome(),user.getEmail(),user.getRole())).toList();
     }
 }
 
