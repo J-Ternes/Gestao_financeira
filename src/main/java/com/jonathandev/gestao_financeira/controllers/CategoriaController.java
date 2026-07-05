@@ -27,7 +27,7 @@ public class CategoriaController {
         return ResponseEntity.status(HttpStatus.OK).body(categoriaCriada);
     }
 
-    @GetMapping("/categorias")
+    @GetMapping("/cadastradas")
     public ResponseEntity categoriasCadastradas(){
         List<CategoriaResponseDto> categorias = categoriaService.buscarTodasCategorias();
 
