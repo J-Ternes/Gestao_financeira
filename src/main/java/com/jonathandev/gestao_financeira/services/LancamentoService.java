@@ -1,10 +1,13 @@
 package com.jonathandev.gestao_financeira.services;
 
 import com.jonathandev.gestao_financeira.dtos.LancamentoRequestDto;
+import com.jonathandev.gestao_financeira.dtos.LancamentoResponseDto;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
 import com.jonathandev.gestao_financeira.repositories.LancamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +25,20 @@ public class LancamentoService {
         novoLancamento.setTipo(requestDto.tipo());
 
         return lancamentoRepository.save(novoLancamento);
+    }
+
+    public List<LancamentoResponseDto> todosLancamentos(){
+        List<LancamentoModel> todosLancamentos = lancamentoRepository.findAll();
+
+        List<LancamentoResponseDto> respondeDto = todosLancamentos
+                .stream()
+                .map(lancamentos-> new LancamentoResponseDto(
+                lancamentos.getPreco(),
+                lancamentos.getDataLancamento(),
+                lancamentos.getTipo(),
+                lancamentos.getCategoria()
+        )).toList();
+
+        return respondeDto;
     }
 }
