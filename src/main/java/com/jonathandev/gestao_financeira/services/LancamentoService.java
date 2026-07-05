@@ -2,12 +2,14 @@ package com.jonathandev.gestao_financeira.services;
 
 import com.jonathandev.gestao_financeira.dtos.LancamentoRequestDto;
 import com.jonathandev.gestao_financeira.dtos.LancamentoResponseDto;
+import com.jonathandev.gestao_financeira.exceptions.LancamentoNotFoundException;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
 import com.jonathandev.gestao_financeira.repositories.LancamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +42,11 @@ public class LancamentoService {
         )).toList();
 
         return respondeDto;
+    }
+
+    public void deletar(UUID id){
+        LancamentoModel lancamento  = lancamentoRepository.findById(id).orElseThrow(()-> new LancamentoNotFoundException());
+
+        lancamentoRepository.delete(lancamento);
     }
 }

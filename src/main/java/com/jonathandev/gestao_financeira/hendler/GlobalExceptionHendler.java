@@ -1,10 +1,7 @@
 package com.jonathandev.gestao_financeira.hendler;
 
 import com.jonathandev.gestao_financeira.dtos.ErrorResponseDto;
-import com.jonathandev.gestao_financeira.exceptions.CategoriaFoundException;
-import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
-import com.jonathandev.gestao_financeira.exceptions.EmailFoundException;
-import com.jonathandev.gestao_financeira.exceptions.UserNotFoundException;
+import com.jonathandev.gestao_financeira.exceptions.*;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +32,10 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CategoriaNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> categoriaNotFoundExceptionHandler (CategoriaNotFoundException categoriaNotFoundException){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(404, "Categoria não cadastrada", LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(LancamentoNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> lancamentoNotFoundHandler(LancamentoNotFoundException lancamentoNotFoundException){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(404,"Lançamento não encontrado", LocalDateTime.now());
     }
 }

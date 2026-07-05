@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/lancamento")
@@ -27,5 +29,12 @@ public class LancamentoController {
     public ResponseEntity mostrarTodosLancamentos(){
 
         return ResponseEntity.status(HttpStatus.OK).body(lancamentoService.todosLancamentos());
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity deletarLancamento(@PathVariable UUID id){
+        lancamentoService.deletar(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
