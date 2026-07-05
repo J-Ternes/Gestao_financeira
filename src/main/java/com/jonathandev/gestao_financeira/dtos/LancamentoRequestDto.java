@@ -6,12 +6,13 @@ import com.jonathandev.gestao_financeira.model.UserModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record LancamentoRequestDto(
         BigDecimal preco,
         LocalDate dataLancamento,
         TipoLancamento tipo,
-        CategoriaModel categoria,
-        UserModel usuario
+        UUID categoriaId,
+        UUID usuarioId
 ) {
 }
