@@ -36,6 +36,6 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(LancamentoNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> lancamentoNotFoundHandler(LancamentoNotFoundException lancamentoNotFoundException){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(404,"Lançamento não encontrado", LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(404,"Lançamento não encontrado", LocalDateTime.now()));
     }
 }
