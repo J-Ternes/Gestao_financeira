@@ -4,8 +4,11 @@ import com.jonathandev.gestao_financeira.dtos.CategoriaRequestDto;
 import com.jonathandev.gestao_financeira.dtos.CategoriaResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaFoundException;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
+import com.jonathandev.gestao_financeira.exceptions.UserNotFoundException;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
+import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.repositories.CategoriaRepository;
+import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,14 +21,19 @@ import java.util.UUID;
 public class CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
+    private final UserRepository userRepository;
 
     public CategoriaModel criarCategoria(CategoriaRequestDto categoriaDto){
         categoriaRepository.findByCategoria(categoriaDto.categoria())
                 .ifPresent(c ->{throw new CategoriaFoundException();});
 
+        UserModel usuario = userRepository
+                .findById(categoriaDto.usuarioId())
+                .orElseThrow(()->new UserNotFoundException());
+
         CategoriaModel novaCategoria = new CategoriaModel();
         novaCategoria.setCategoria(categoriaDto.categoria());
-        novaCategoria.setUsuario(categoriaDto.usuario());
+        novaCategoria.setUsuario(usuario);
 
         return categoriaRepository.save(novaCategoria);
     }
