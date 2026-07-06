@@ -1,5 +1,6 @@
 package com.jonathandev.gestao_financeira.controllers;
 
+import com.jonathandev.gestao_financeira.dtos.RelatorioLancamentoResponseDto;
 import com.jonathandev.gestao_financeira.services.RelatorioLancamentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,8 @@ public class RelatorioController {
 
     @GetMapping("/{categoria}")
     public ResponseEntity mostrarLancamentosPorCategoria(@PathVariable String categoria){
-        relatorioLancamentoService.mostrarPorCategoria(categoria);
+       RelatorioLancamentoResponseDto relatorioPorCategoria =  relatorioLancamentoService.mostrarPorCategoria(categoria);
 
-        return ResponseEntity.status(HttpStatus.OK).body(" ");
+        return ResponseEntity.status(HttpStatus.OK).body(relatorioPorCategoria);
     }
 }
