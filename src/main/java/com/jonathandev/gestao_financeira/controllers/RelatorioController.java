@@ -27,7 +27,7 @@ public class RelatorioController {
 
     @GetMapping("/total/{categoria}")
     public ResponseEntity totalGastoPorCategoria(@PathVariable String categoria){
-        ValorTotalPorCategoriaResponseDto valorTotalPorCategoriaResponseDto =  relatorioLancamentoService.totalPorCategoria(categoria);
+        ValorTotalPorCategoriaResponseDto valorTotalPorCategoriaResponseDto =  relatorioLancamentoService.calcularTotalPorCategoria(categoria);
 
         return ResponseEntity.status(HttpStatus.OK).body(valorTotalPorCategoriaResponseDto);
     }

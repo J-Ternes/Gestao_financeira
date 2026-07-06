@@ -21,7 +21,7 @@ public class RelatorioLancamentoService {
     private final LancamentoRepository lancamentoRepository;
     private final CategoriaRepository categoriaRepository;
 
-    public ValorTotalPorCategoriaResponseDto totalPorCategoria(String nomeCategoria){
+    public ValorTotalPorCategoriaResponseDto calcularTotalPorCategoria(String nomeCategoria){
 
         CategoriaModel verificandoCategoria = categoriaRepository.findByCategoria(nomeCategoria);
 
@@ -29,7 +29,7 @@ public class RelatorioLancamentoService {
 
         BigDecimal totalGasto = lancamentoRepository.calcularTotalPorCategoria(nomeCategoria);
 
-        return new ValorTotalPorCategoriaResponseDto(totalGasto);
+        return new ValorTotalPorCategoriaResponseDto(nomeCategoria,totalGasto);
     }
 
 
