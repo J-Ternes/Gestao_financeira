@@ -2,6 +2,7 @@ package com.jonathandev.gestao_financeira.services;
 
 import com.jonathandev.gestao_financeira.dtos.LancamentoResumoDto;
 import com.jonathandev.gestao_financeira.dtos.RelatorioLancamentoResponseDto;
+import com.jonathandev.gestao_financeira.dtos.ValorTotalPorCategoriaResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
@@ -18,25 +19,29 @@ public class RelatorioLancamentoService {
 
     private final LancamentoRepository lancamentoRepository;
 
-    public RelatorioLancamentoResponseDto mostrarPorCategoria(String nomeCategoria){
+    public ValorTotalPorCategoriaResponseDto mostrarPorCategoria(String nomeCategoria){
 
-        List<LancamentoModel> lancamentos = lancamentoRepository.findByCategoriaNome(nomeCategoria);
+       // List<LancamentoModel> lancamentos = lancamentoRepository.findByCategoriaNome(nomeCategoria);
 
-        if(lancamentos.isEmpty()) throw new CategoriaNotFoundException();
+       // if(lancamentos.isEmpty()) throw new CategoriaNotFoundException();
 
-        BigDecimal totalGasto = lancamentos
+       /* BigDecimal totalGasto = lancamentos
                 .stream()
                 .map(LancamentoModel::getPreco)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add); */
 
-        List<LancamentoResumoDto> resumo = lancamentos
+        BigDecimal totalGasto = lancamentoRepository.calcularTotalPorCategoria(nomeCategoria);
+
+       /* List<LancamentoResumoDto> resumo = lancamentos
                 .stream()
                 .map(l -> new LancamentoResumoDto(
                         l.getPreco(),
                         l.getDataLancamento()
                 ))
-                .toList();
+                .toList(); */
 
-        return new RelatorioLancamentoResponseDto(nomeCategoria, totalGasto, resumo);
+       // return new RelatorioLancamentoResponseDto(nomeCategoria, totalGasto, resumo);
+
+        return new ValorTotalPorCategoriaResponseDto(totalGasto);
     }
 }
