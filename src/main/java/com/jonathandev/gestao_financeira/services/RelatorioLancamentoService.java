@@ -6,6 +6,7 @@ import com.jonathandev.gestao_financeira.dtos.ValorTotalPorCategoriaResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
+import com.jonathandev.gestao_financeira.repositories.CategoriaRepository;
 import com.jonathandev.gestao_financeira.repositories.LancamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,13 @@ import java.util.List;
 public class RelatorioLancamentoService {
 
     private final LancamentoRepository lancamentoRepository;
+    private final CategoriaRepository categoriaRepository;
 
     public ValorTotalPorCategoriaResponseDto totalPorCategoria(String nomeCategoria){
 
-        CategoriaModel verificandoCateforia = lancamentoRepository.findByCategoria(nomeCategoria);
+        CategoriaModel verificandoCategoria = categoriaRepository.findByCategoria(nomeCategoria);
 
-       if(verificandoCateforia == null) throw new CategoriaNotFoundException();
+       if(verificandoCategoria == null) throw new CategoriaNotFoundException();
 
         BigDecimal totalGasto = lancamentoRepository.calcularTotalPorCategoria(nomeCategoria);
 
