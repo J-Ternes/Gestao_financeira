@@ -22,6 +22,8 @@ public class RelatorioLancamentoService {
 
         List<LancamentoModel> lancamentos = lancamentoRepository.findByCategoriaNome(nomeCategoria);
 
+        if(lancamentos.isEmpty()) throw new CategoriaNotFoundException();
+
         BigDecimal totalGasto = lancamentos
                 .stream()
                 .map(LancamentoModel::getPreco)
