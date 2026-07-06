@@ -18,14 +18,14 @@ public class RelatorioController {
 
     private final RelatorioLancamentoService relatorioLancamentoService;
 
-    @GetMapping("/total/{categoria}")
+    @GetMapping("/{categoria}")
     public ResponseEntity mostrarLancamentosPorCategoria(@PathVariable String categoria){
        RelatorioLancamentoResponseDto lancamentosPorCategoria =  relatorioLancamentoService.historicoDeGastoPorCategoria(categoria);
 
         return ResponseEntity.status(HttpStatus.OK).body(lancamentosPorCategoria);
     }
 
-    @GetMapping("/{categoria}")
+    @GetMapping("/total/{categoria}")
     public ResponseEntity totalGastoPorCategoria(@PathVariable String categoria){
         ValorTotalPorCategoriaResponseDto valorTotalPorCategoriaResponseDto =  relatorioLancamentoService.totalPorCategoria(categoria);
 
