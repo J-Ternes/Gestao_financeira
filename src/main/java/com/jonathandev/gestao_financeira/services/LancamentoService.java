@@ -54,7 +54,7 @@ public class LancamentoService {
                 lancamentos.getPreco(),
                 lancamentos.getDataLancamento(),
                 lancamentos.getTipo(),
-                lancamentos.getCategoria()
+                lancamentos.getCategoria().getCategoria()
         )).toList();
 
         return respondeDto;

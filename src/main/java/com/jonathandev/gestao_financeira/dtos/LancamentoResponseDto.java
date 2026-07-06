@@ -10,6 +10,6 @@ public record LancamentoResponseDto(
         BigDecimal preco,
         LocalDate dataLancamento,
         TipoLancamento tipo,
-        CategoriaModel categoria
+        String categoria
 ) {
 }
