@@ -1,5 +1,6 @@
 package com.jonathandev.gestao_financeira.repositories;
 
+import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +18,5 @@ public interface LancamentoRepository extends JpaRepository<LancamentoModel, UUI
     @Query("SELECT SUM(l.preco) FROM LancamentoModel l WHERE l.categoria.categoria = :nomeCategoria")
     BigDecimal calcularTotalPorCategoria(@Param("nomeCategoria") String nomeCategoria);
 
-    LancamentoModel findByCategoria(String categoria);
+    CategoriaModel findByCategoria(String categoria);
 }

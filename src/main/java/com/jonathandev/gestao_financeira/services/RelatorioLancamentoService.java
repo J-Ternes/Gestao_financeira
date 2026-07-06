@@ -21,7 +21,9 @@ public class RelatorioLancamentoService {
 
     public ValorTotalPorCategoriaResponseDto totalPorCategoria(String nomeCategoria){
 
-       if(lancamentoRepository.findByCategoria(nomeCategoria) == null) throw new CategoriaNotFoundException();
+        CategoriaModel verificandoCateforia = lancamentoRepository.findByCategoria(nomeCategoria);
+
+       if(verificandoCateforia == null) throw new CategoriaNotFoundException();
 
         BigDecimal totalGasto = lancamentoRepository.calcularTotalPorCategoria(nomeCategoria);
 
