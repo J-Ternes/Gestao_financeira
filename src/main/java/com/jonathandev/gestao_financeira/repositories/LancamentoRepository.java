@@ -16,4 +16,6 @@ public interface LancamentoRepository extends JpaRepository<LancamentoModel, UUI
 
     @Query("SELECT SUM(l.preco) FROM LancamentoModel l WHERE l.categoria.categoria = :nomeCategoria")
     BigDecimal calcularTotalPorCategoria(@Param("nomeCategoria") String nomeCategoria);
+
+    LancamentoModel findByCategoria(String categoria);
 }

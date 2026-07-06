@@ -5,7 +5,6 @@ import java.util.List;
 
 public record RelatorioLancamentoResponseDto(
         String categoria,
-        BigDecimal totalGasto,
         List<LancamentoResumoDto> lancamentos
 ) {
 }

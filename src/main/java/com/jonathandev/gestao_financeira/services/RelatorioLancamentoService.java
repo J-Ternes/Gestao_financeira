@@ -19,29 +19,29 @@ public class RelatorioLancamentoService {
 
     private final LancamentoRepository lancamentoRepository;
 
-    public ValorTotalPorCategoriaResponseDto mostrarPorCategoria(String nomeCategoria){
+    public ValorTotalPorCategoriaResponseDto totalPorCategoria(String nomeCategoria){
 
-       // List<LancamentoModel> lancamentos = lancamentoRepository.findByCategoriaNome(nomeCategoria);
-
-       // if(lancamentos.isEmpty()) throw new CategoriaNotFoundException();
-
-       /* BigDecimal totalGasto = lancamentos
-                .stream()
-                .map(LancamentoModel::getPreco)
-                .reduce(BigDecimal.ZERO, BigDecimal::add); */
+       if(lancamentoRepository.findByCategoria(nomeCategoria) == null) throw new CategoriaNotFoundException();
 
         BigDecimal totalGasto = lancamentoRepository.calcularTotalPorCategoria(nomeCategoria);
 
-       /* List<LancamentoResumoDto> resumo = lancamentos
+        return new ValorTotalPorCategoriaResponseDto(totalGasto);
+    }
+
+
+    public RelatorioLancamentoResponseDto historicoDeGastoPorCategoria(String nomeCategoria){
+         List<LancamentoModel> lancamentos = lancamentoRepository.findByCategoriaNome(nomeCategoria);
+
+         if(lancamentos.isEmpty()) throw new CategoriaNotFoundException();
+
+          List<LancamentoResumoDto> resumo = lancamentos
                 .stream()
                 .map(l -> new LancamentoResumoDto(
                         l.getPreco(),
                         l.getDataLancamento()
                 ))
-                .toList(); */
+                .toList();
 
-       // return new RelatorioLancamentoResponseDto(nomeCategoria, totalGasto, resumo);
-
-        return new ValorTotalPorCategoriaResponseDto(totalGasto);
+        return new RelatorioLancamentoResponseDto(nomeCategoria, resumo);
     }
 }
