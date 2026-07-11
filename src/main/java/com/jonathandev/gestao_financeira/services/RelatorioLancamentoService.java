@@ -1,8 +1,6 @@
 package com.jonathandev.gestao_financeira.services;
 
-import com.jonathandev.gestao_financeira.dtos.LancamentoResumoDto;
-import com.jonathandev.gestao_financeira.dtos.RelatorioLancamentoResponseDto;
-import com.jonathandev.gestao_financeira.dtos.ValorTotalPorCategoriaResponseDto;
+import com.jonathandev.gestao_financeira.dtos.*;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
@@ -37,22 +35,26 @@ public class RelatorioLancamentoService {
     }
 
 
-    public RelatorioLancamentoResponseDto historicoDeGastoPorCategoria(String nomeCategoria,int pagina, int tamanho, String ordenarPor){
+    public PaginaResponseDto<RelatorioLancamentoResponseDto> historicoDeGastoPorCategoria(String nomeCategoria, int pagina, int tamanho, String ordenarPor){
+
+        CategoriaModel categoria = lancamentoRepository.findByCategoria(nomeCategoria);
+
+        if(categoria == null) throw new CategoriaNotFoundException();
 
         Pageable pageable = PageRequest.of(pagina,tamanho, Sort.by(Sort.Direction.DESC,ordenarPor));
 
-         Page<LancamentoModel> lancamentos = lancamentoRepository.findByCategoriaNome(nomeCategoria, pageable);
+         Page<LancamentoModel> page = lancamentoRepository.findByCategoriaNome(nomeCategoria, pageable);
 
-         if(lancamentos.isEmpty()) throw new CategoriaNotFoundException();
 
-          List<LancamentoResumoDto> resumo = lancamentos
+        List<LancamentoResponseDto> conteudo = page.getContent()
                 .stream()
-                .map(l -> new LancamentoResumoDto(
-                        l.getPreco(),
-                        l.getDataLancamento()
-                ))
-                .toList();
+                .map(lancamento-> new LancamentoResponseDto(
+                        lancamento.getPreco(),
+                        lancamento.getDataLancamento(),
+                        lancamento.getTipo(),
+                        lancamento.getCategoria().getCategoria()
+                )).toList();
 
-        return new RelatorioLancamentoResponseDto(nomeCategoria, resumo);
+        return new PaginaResponseDto(conteudo,page.getNumber(),page.getSize(),page.getTotalElements(),page.getTotalPages());
     }
 }
