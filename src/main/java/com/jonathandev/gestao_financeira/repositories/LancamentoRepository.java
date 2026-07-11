@@ -16,10 +16,8 @@ public interface LancamentoRepository extends JpaRepository<LancamentoModel, UUI
 
     Page<LancamentoModel> findByUsuarioId(UUID usuarioId, Pageable pageable);
 
-    Page<LancamentoModel> findByCategoriaNome(String nomeCategoria, Pageable pageable);
-
     @Query("SELECT l FROM LancamentoModel l WHERE l.categoria.categoria = :nomeCategoria")
-    Page<LancamentoModel> findByCategoriaNome(@Param("nomeCategoria") String nomeCategoria);
+    Page<LancamentoModel> findByCategoriaNome(@Param("nomeCategoria") String nomeCategoria, Pageable pageable);
 
     @Query("SELECT SUM(l.preco) FROM LancamentoModel l WHERE l.categoria.categoria = :nomeCategoria")
     BigDecimal calcularTotalPorCategoria(@Param("nomeCategoria") String nomeCategoria);

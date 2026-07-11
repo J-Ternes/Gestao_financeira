@@ -32,6 +32,7 @@ public class LancamentoController {
     public ResponseEntity<PaginaResponseDto<LancamentoResponseDto>> lancamentosPaginados(@RequestParam(defaultValue = "0") int pagina,
                                                                                          @RequestParam(defaultValue = "10") int tamanho,
                                                                                          @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
+
         PaginaResponseDto<LancamentoResponseDto> lancamentos = lancamentoService.todosLancamentosPaginados(pagina,tamanho,ordenarPor);
 
         return ResponseEntity.status(HttpStatus.OK).body(lancamentos);
@@ -39,6 +40,7 @@ public class LancamentoController {
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity deletarLancamento(@PathVariable UUID id){
+
         lancamentoService.deletar(id);
 
         return ResponseEntity.noContent().build();
