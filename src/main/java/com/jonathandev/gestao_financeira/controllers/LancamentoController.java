@@ -1,6 +1,8 @@
 package com.jonathandev.gestao_financeira.controllers;
 
 import com.jonathandev.gestao_financeira.dtos.LancamentoRequestDto;
+import com.jonathandev.gestao_financeira.dtos.LancamentoResponseDto;
+import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
 import com.jonathandev.gestao_financeira.services.RelatorioLancamentoService;
 import com.jonathandev.gestao_financeira.services.LancamentoService;
@@ -27,9 +29,12 @@ public class LancamentoController {
     }
 
     @GetMapping("/cadastrados")
-    public ResponseEntity mostrarTodosLancamentos(){
+    public ResponseEntity<PaginaResponseDto<LancamentoResponseDto>> lancamentosPaginados(@RequestParam(defaultValue = "0") int pagina,
+                                                                                         @RequestParam(defaultValue = "10") int tamanho,
+                                                                                         @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
+        PaginaResponseDto<LancamentoResponseDto> lancamentos = lancamentoService.todosLancamentosPaginados(pagina,tamanho,ordenarPor);
 
-        return ResponseEntity.status(HttpStatus.OK).body(lancamentoService.todosLancamentos());
+        return ResponseEntity.status(HttpStatus.OK).body(lancamentos);
     }
 
     @DeleteMapping("/deletar/{id}")

@@ -2,10 +2,11 @@ package com.jonathandev.gestao_financeira.dtos;
 
 import java.util.List;
 
-public record PaginaResponseDto(
-        List conteudo,
+public record PaginaResponseDto<T>(
+        List<T> conteudo,
         int paginaAtual,
-        int totalElementos,
+        int tamanhoPagina,
+        long totalElementos,
         int totalPaginas
 ) {
 }
