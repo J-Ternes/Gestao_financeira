@@ -6,10 +6,7 @@ import com.jonathandev.gestao_financeira.services.RelatorioLancamentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/relatorio")
@@ -19,8 +16,11 @@ public class RelatorioController {
     private final RelatorioLancamentoService relatorioLancamentoService;
 
     @GetMapping("/{categoria}")
-    public ResponseEntity mostrarLancamentosPorCategoria(@PathVariable String categoria){
-       RelatorioLancamentoResponseDto lancamentosPorCategoria =  relatorioLancamentoService.historicoDeGastoPorCategoria(categoria);
+    public ResponseEntity mostrarLancamentosPorCategoria(@PathVariable String categoria,
+                                                         @RequestParam(defaultValue = "0") int pagina,
+                                                         @RequestParam(defaultValue = "10") int tamanho,
+                                                         @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
+       RelatorioLancamentoResponseDto lancamentosPorCategoria =  relatorioLancamentoService.historicoDeGastoPorCategoria(categoria,pagina,tamanho,ordenarPor);
 
         return ResponseEntity.status(HttpStatus.OK).body(lancamentosPorCategoria);
     }

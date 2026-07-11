@@ -9,6 +9,10 @@ import com.jonathandev.gestao_financeira.model.LancamentoModel;
 import com.jonathandev.gestao_financeira.repositories.CategoriaRepository;
 import com.jonathandev.gestao_financeira.repositories.LancamentoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -33,8 +37,11 @@ public class RelatorioLancamentoService {
     }
 
 
-    public RelatorioLancamentoResponseDto historicoDeGastoPorCategoria(String nomeCategoria){
-         List<LancamentoModel> lancamentos = lancamentoRepository.findByCategoriaNome(nomeCategoria);
+    public RelatorioLancamentoResponseDto historicoDeGastoPorCategoria(String nomeCategoria,int pagina, int tamanho, String ordenarPor){
+
+        Pageable pageable = PageRequest.of(pagina,tamanho, Sort.by(Sort.Direction.DESC,ordenarPor));
+
+         Page<LancamentoModel> lancamentos = lancamentoRepository.findByCategoriaNome(nomeCategoria, pageable);
 
          if(lancamentos.isEmpty()) throw new CategoriaNotFoundException();
 
