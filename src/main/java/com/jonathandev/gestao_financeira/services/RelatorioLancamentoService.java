@@ -37,23 +37,26 @@ public class RelatorioLancamentoService {
 
     public PaginaResponseDto<RelatorioLancamentoResponseDto> historicoDeGastoPorCategoria(String nomeCategoria, int pagina, int tamanho, String ordenarPor){
 
-        CategoriaModel categoria = lancamentoRepository.findByCategoria(nomeCategoria);
+        CategoriaModel categoria = categoriaRepository.findByCategoria(nomeCategoria);
 
         if(categoria == null) throw new CategoriaNotFoundException();
 
         Pageable pageable = PageRequest.of(pagina,tamanho, Sort.by(Sort.Direction.DESC,ordenarPor));
 
-         Page<LancamentoModel> page = lancamentoRepository.findByCategoriaNome(nomeCategoria, pageable);
+         Page<LancamentoModel> page = lancamentoRepository.findByCategoriaNomePaginado(nomeCategoria, pageable);
 
-
-        List<LancamentoResponseDto> conteudo = page.getContent()
+        //Crio o resumo de cada lancamento com o preco e a data
+        List<LancamentoResumoDto> resumo = page.getContent()
                 .stream()
-                .map(lancamento-> new LancamentoResponseDto(
+                .map(lancamento-> new LancamentoResumoDto(
                         lancamento.getPreco(),
-                        lancamento.getDataLancamento(),
-                        lancamento.getTipo(),
-                        lancamento.getCategoria().getCategoria()
+                        lancamento.getDataLancamento()
                 )).toList();
+
+        //Crio o relatorio dos lancamentos de cada categoria
+        List<RelatorioLancamentoResponseDto> conteudo = List.of(
+                new RelatorioLancamentoResponseDto(nomeCategoria, resumo)
+        );
 
         return new PaginaResponseDto(conteudo,page.getNumber(),page.getSize(),page.getTotalElements(),page.getTotalPages());
     }

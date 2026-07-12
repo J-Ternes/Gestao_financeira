@@ -1,5 +1,6 @@
 package com.jonathandev.gestao_financeira.controllers;
 
+import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
 import com.jonathandev.gestao_financeira.dtos.RelatorioLancamentoResponseDto;
 import com.jonathandev.gestao_financeira.dtos.ValorTotalPorCategoriaResponseDto;
 import com.jonathandev.gestao_financeira.services.RelatorioLancamentoService;
@@ -16,11 +17,12 @@ public class RelatorioController {
     private final RelatorioLancamentoService relatorioLancamentoService;
 
     @GetMapping("/{categoria}")
-    public ResponseEntity mostrarLancamentosPorCategoria(@PathVariable String categoria,
-                                                         @RequestParam(defaultValue = "0") int pagina,
-                                                         @RequestParam(defaultValue = "10") int tamanho,
-                                                         @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
-       RelatorioLancamentoResponseDto lancamentosPorCategoria =  relatorioLancamentoService.historicoDeGastoPorCategoria(categoria,pagina,tamanho,ordenarPor);
+    public ResponseEntity<PaginaResponseDto<RelatorioLancamentoResponseDto>> mostrarLancamentosPorCategoria(@PathVariable String categoria,
+                                                                            @RequestParam(defaultValue = "0") int pagina,
+                                                                            @RequestParam(defaultValue = "10") int tamanho,
+                                                                            @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
+
+       PaginaResponseDto lancamentosPorCategoria =  relatorioLancamentoService.historicoDeGastoPorCategoria(categoria,pagina,tamanho,ordenarPor);
 
         return ResponseEntity.status(HttpStatus.OK).body(lancamentosPorCategoria);
     }
