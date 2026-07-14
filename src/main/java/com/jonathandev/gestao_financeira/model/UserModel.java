@@ -42,6 +42,12 @@ public class UserModel implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    public UserModel (String email, String senha, UserRole role){
+        this.email = email;
+        this.senha = senha;
+        this.role = role;
+    }
+
 
     //Criando as Roles do próprio Spring Security com base nas roles criadas no nosso UserRole
     @Override

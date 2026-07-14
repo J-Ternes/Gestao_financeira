@@ -1,5 +1,7 @@
 package com.jonathandev.gestao_financeira.auth;
 
+import com.jonathandev.gestao_financeira.dtos.AuthRegisterDto;
+import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final AuthUserService authUserService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthRequestDto dados){
@@ -23,5 +27,13 @@ public class AuthController {
         var auth = authenticationManager.authenticate(emailPassword);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/registrar")
+    public ResponseEntity registrar(@RequestBody @Valid AuthRegisterDto dados){
+        authUserService.registrar(dados);
+
+        return ResponseEntity.ok().build();
+
     }
 }
