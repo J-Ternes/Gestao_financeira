@@ -28,7 +28,7 @@ public class AuthUserService {
         novoUsuario.setNome(dto.nome());
         novoUsuario.setEmail(dto.email());
         novoUsuario.setSenha(dto.senha());
-        //novoUsuario.setRole(UserRole.USER);
+        novoUsuario.setRole(UserRole.ADMIN);
 
         return userRepository.save(novoUsuario);
 
