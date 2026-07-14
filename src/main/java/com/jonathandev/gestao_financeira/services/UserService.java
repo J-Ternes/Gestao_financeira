@@ -7,6 +7,7 @@ import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.model.UserRole;
 import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserModel cadastrar(UserRequestDto dto) {
-        UserModel user = userRepository.findByEmail(dto.email());
+        UserDetails user = userRepository.findByEmail(dto.email());
 
         if(user != null) throw new EmailFoundException();
 
