@@ -4,6 +4,7 @@ import com.jonathandev.gestao_financeira.dtos.AuthRegisterDto;
 import com.jonathandev.gestao_financeira.dtos.UserResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.EmailFoundException;
 import com.jonathandev.gestao_financeira.model.UserModel;
+import com.jonathandev.gestao_financeira.model.UserRole;
 import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,12 @@ public class AuthUserService {
         if(usuario != null) throw new EmailFoundException();
 
         String senhaCriptografada = new BCryptPasswordEncoder().encode(dto.senha());
-        UserModel novoUsuario = new UserModel(dto.email(), senhaCriptografada, dto.role());
+
+        UserModel novoUsuario = new UserModel();
+        novoUsuario.setNome(dto.nome());
+        novoUsuario.setEmail(dto.email());
+        novoUsuario.setSenha(dto.senha());
+        //novoUsuario.setRole(UserRole.USER);
 
         return userRepository.save(novoUsuario);
 
