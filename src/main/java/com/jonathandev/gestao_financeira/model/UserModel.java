@@ -6,7 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "users")
@@ -14,7 +20,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserModel {
+public class UserModel implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -36,4 +42,21 @@ public class UserModel {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+
+    //Criando as Roles do próprio Spring Security com base nas roles criadas no nosso UserRole
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADNIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public @Nullable String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }
