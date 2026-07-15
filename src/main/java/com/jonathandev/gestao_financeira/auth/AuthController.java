@@ -1,6 +1,8 @@
 package com.jonathandev.gestao_financeira.auth;
 
 import com.jonathandev.gestao_financeira.dtos.AuthRegisterDto;
+import com.jonathandev.gestao_financeira.dtos.AuthResponseDto;
+import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +22,16 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final AuthUserService authUserService;
+    private final TokenService tokenService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthRequestDto dados){
         UsernamePasswordAuthenticationToken emailPassword = new UsernamePasswordAuthenticationToken(dados.email(),dados.senha());
         var auth = authenticationManager.authenticate(emailPassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.gerarToken((UserModel) auth.getPrincipal());
+
+        return ResponseEntity.ok(new AuthResponseDto(token));
     }
 
     @PostMapping("/registrar")
