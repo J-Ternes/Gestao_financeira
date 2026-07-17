@@ -21,14 +21,6 @@ public class UserController {
 
     private final UserService userService;
 
-
-    @PostMapping("/cadastro")
-    public ResponseEntity novoUsuario(@RequestBody @Valid UserRequestDto userRequestDTO) {
-        UserModel response = userService.cadastrar(userRequestDTO);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @GetMapping("/cadastrados")
     public ResponseEntity usuariosCadastrados(){
     List<UserResponseDto> usuarios = userService.usuariosCadastrados();

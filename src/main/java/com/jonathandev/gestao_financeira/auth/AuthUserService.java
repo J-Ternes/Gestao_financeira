@@ -19,7 +19,9 @@ public class AuthUserService {
     private final UserRepository userRepository;
 
     public UserModel registrar(AuthRegisterDto dto){
+
         UserDetails usuario = userRepository.findByEmail(dto.email());
+
         if(usuario != null) throw new EmailFoundException();
 
         String senhaCriptografada = new BCryptPasswordEncoder().encode(dto.senha());

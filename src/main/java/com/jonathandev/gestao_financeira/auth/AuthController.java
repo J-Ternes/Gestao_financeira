@@ -6,6 +6,7 @@ import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,21 +25,22 @@ public class AuthController {
     private final AuthUserService authUserService;
     private final TokenService tokenService;
 
+    @PostMapping("/registrar")
+    public ResponseEntity registrar(@RequestBody @Valid AuthRegisterDto dados){
+        authUserService.registrar(dados);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Novo usuário criado com sucesso!");
+    }
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthRequestDto dados){
+
         UsernamePasswordAuthenticationToken emailPassword = new UsernamePasswordAuthenticationToken(dados.email(),dados.senha());
+
         var auth = authenticationManager.authenticate(emailPassword);
 
         var token = tokenService.gerarToken((UserModel) auth.getPrincipal());
 
         return ResponseEntity.ok(new AuthResponseDto(token));
-    }
-
-    @PostMapping("/registrar")
-    public ResponseEntity registrar(@RequestBody @Valid AuthRegisterDto dados){
-        authUserService.registrar(dados);
-
-        return ResponseEntity.ok().build();
-
     }
 }
