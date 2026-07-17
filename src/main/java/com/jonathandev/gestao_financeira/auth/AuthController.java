@@ -27,7 +27,7 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/registrar")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity registrar(@RequestBody @Valid AuthRegisterDto dados){
         authUserService.registrar(dados);
 
