@@ -7,6 +7,7 @@ import com.jonathandev.gestao_financeira.services.RelatorioLancamentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class RelatorioController {
 
     private final RelatorioLancamentoService relatorioLancamentoService;
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{categoria}")
     public ResponseEntity<PaginaResponseDto<RelatorioLancamentoResponseDto>> mostrarLancamentosPorCategoria(@PathVariable String categoria,
                                                                             @RequestParam(defaultValue = "0") int pagina,
