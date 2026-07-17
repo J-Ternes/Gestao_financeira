@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class LancamentoController {
 
     private final LancamentoService lancamentoService;
 
+    @PreAuthorize("hasRole('USER','ADMIN')")
     @PostMapping("/novo")
     public ResponseEntity novoLancamento(@RequestBody @Valid LancamentoRequestDto lancamentoDto){
         LancamentoModel lancamento = lancamentoService.cadastrarLancamento(lancamentoDto);
@@ -28,6 +30,7 @@ public class LancamentoController {
         return ResponseEntity.status(HttpStatus.OK).body(lancamento);
     }
 
+    @PreAuthorize("hasRole('USER','ADMIN')")
     @GetMapping("/cadastrados")
     public ResponseEntity<PaginaResponseDto<LancamentoResponseDto>> lancamentosPaginados(@RequestParam(defaultValue = "0") int pagina,
                                                                                          @RequestParam(defaultValue = "10") int tamanho,
@@ -38,6 +41,7 @@ public class LancamentoController {
         return ResponseEntity.status(HttpStatus.OK).body(lancamentos);
     }
 
+    @PreAuthorize("hasRole('USER','ADMIN')")
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity deletarLancamento(@PathVariable UUID id){
 
