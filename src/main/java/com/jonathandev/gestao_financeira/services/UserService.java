@@ -1,5 +1,6 @@
 package com.jonathandev.gestao_financeira.services;
 import com.jonathandev.gestao_financeira.dtos.AuthRegisterDto;
+import com.jonathandev.gestao_financeira.dtos.AuthRequestDto;
 import com.jonathandev.gestao_financeira.dtos.UserRequestDto;
 import com.jonathandev.gestao_financeira.dtos.UserResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.EmailFoundException;
@@ -8,6 +9,9 @@ import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.model.UserRole;
 import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +25,8 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
     public UserModel registrar(AuthRegisterDto dto){
 
@@ -38,6 +44,17 @@ public class UserService {
 
         return userRepository.save(novoUsuario);
 
+    }
+
+    public String autenticar(AuthRequestDto dados){
+
+        UsernamePasswordAuthenticationToken emailPassword = new UsernamePasswordAuthenticationToken(dados.email(),dados.senha());
+
+        var auth = authenticationManager.authenticate(emailPassword);
+
+        String token = tokenService.gerarToken((UserModel) auth.getPrincipal());
+
+        return token;
     }
 
     public List<UserResponseDto> usuariosCadastrados (){

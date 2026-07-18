@@ -26,8 +26,7 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
+
 
 
 
@@ -41,12 +40,7 @@ public class UserController {
 
     @PostMapping("/auth/login")
     public ResponseEntity login(@RequestBody @Valid AuthRequestDto dados){
-
-        UsernamePasswordAuthenticationToken emailPassword = new UsernamePasswordAuthenticationToken(dados.email(),dados.senha());
-
-        var auth = authenticationManager.authenticate(emailPassword);
-
-        var token = tokenService.gerarToken((UserModel) auth.getPrincipal());
+        String token = userService.autenticar(dados);
 
         return ResponseEntity.ok(new AuthResponseDto(token));
     }
