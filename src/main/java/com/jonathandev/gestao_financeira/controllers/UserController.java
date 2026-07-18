@@ -27,10 +27,6 @@ public class UserController {
 
     private final UserService userService;
 
-
-
-
-
     @PostMapping("/auth/registrar")
     public ResponseEntity registrar(@RequestBody @Valid AuthRegisterDto dados){
        userService.registrar(dados);

@@ -1,5 +1,6 @@
 package com.jonathandev.gestao_financeira.config;
 
+import com.jonathandev.gestao_financeira.dtos.JWTEmailERoleDto;
 import com.jonathandev.gestao_financeira.services.TokenService;
 import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -27,7 +28,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoverToken(request);
 
         if(token != null){
-            var email = tokenService.validarToken(token);
+            JWTEmailERoleDto dto = tokenService.validarToken(token);
+            String email = dto.email();
             UserDetails user = userRepository.findByEmail(email);
 
             var authentication = new UsernamePasswordAuthenticationToken(user,null, user.getAuthorities());

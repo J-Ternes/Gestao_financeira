@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.jonathandev.gestao_financeira.dtos.JWTEmailERoleDto;
 import com.jonathandev.gestao_financeira.model.UserModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,12 @@ public class TokenService {
     public String gerarToken(UserModel usuario){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
+
             String token = JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(usuario.getEmail())
-                    .withSubject(usuario.getRole().getRole())
-                    .withExpiresAt(gerarTempoDeExpirar())
+                    .withClaim("role", usuario.getRole().name())
+                    .withExpiresAt(Instant.now().plusSeconds(86400))
                     .sign(algorithm);
             return token;
 
@@ -34,22 +37,22 @@ public class TokenService {
         }
     }
 
-    public String validarToken(String token){
+    public JWTEmailERoleDto validarToken(String token){
         try {
-
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
-                    .withIssuer("auth-api")
-                    .build()
-                    .verify(token)
-                    .getSubject();
+
+            DecodedJWT decode = JWT.require(algorithm).build().verify(token);
+
+            String emailJwt = decode.getSubject();
+            String roleJwt = decode.getClaim("role").asString();
+
+            JWTEmailERoleDto emailERole = new JWTEmailERoleDto(emailJwt,roleJwt);
+
+
+            return emailERole;
 
         }catch (JWTVerificationException e){
-            return " ";
+            throw new RuntimeException("Token JWT inválido ou expirado", e);
         }
-    }
-
-    public Instant gerarTempoDeExpirar(){
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 }
