@@ -1,5 +1,6 @@
 package com.jonathandev.gestao_financeira.config;
 
+import com.jonathandev.gestao_financeira.hendler.AcessoNegadoHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
+    private final AcessoNegadoHandler acessoNegadoHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
@@ -34,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users/auth/registrar").permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exception -> exception.accessDeniedHandler(acessoNegadoHandler)) //Adiciona a minha resposta customizada
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
