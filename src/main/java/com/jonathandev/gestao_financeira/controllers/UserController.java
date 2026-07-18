@@ -1,7 +1,7 @@
 package com.jonathandev.gestao_financeira.controllers;
 
-import com.jonathandev.gestao_financeira.auth.AuthRequestDto;
-import com.jonathandev.gestao_financeira.auth.TokenService;
+import com.jonathandev.gestao_financeira.dtos.AuthRequestDto;
+import com.jonathandev.gestao_financeira.services.TokenService;
 import com.jonathandev.gestao_financeira.dtos.AuthRegisterDto;
 import com.jonathandev.gestao_financeira.dtos.AuthResponseDto;
 import com.jonathandev.gestao_financeira.dtos.UserResponseDto;

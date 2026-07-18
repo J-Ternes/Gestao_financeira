@@ -1,4 +1,4 @@
-package com.jonathandev.gestao_financeira.auth;
+package com.jonathandev.gestao_financeira.services;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

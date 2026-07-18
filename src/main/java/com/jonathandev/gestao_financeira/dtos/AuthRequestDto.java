@@ -1,4 +1,4 @@
-package com.jonathandev.gestao_financeira.auth;
+package com.jonathandev.gestao_financeira.dtos;
 
 public record AuthRequestDto(
         String email,

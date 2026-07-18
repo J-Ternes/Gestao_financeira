@@ -1,4 +1,4 @@
-package com.jonathandev.gestao_financeira.auth;
+package com.jonathandev.gestao_financeira.services;
 
 import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;

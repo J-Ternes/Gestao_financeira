@@ -1,6 +1,6 @@
 package com.jonathandev.gestao_financeira.config;
 
-import com.jonathandev.gestao_financeira.auth.TokenService;
+import com.jonathandev.gestao_financeira.services.TokenService;
 import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
