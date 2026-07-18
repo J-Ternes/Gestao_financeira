@@ -49,8 +49,8 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.OK).body(usuarios);
     }
 
-    @DeleteMapping("/deletar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity deletarUsuario(@PathVariable UUID id){
     userService.deletar(id);
     return ResponseEntity.noContent().build();
