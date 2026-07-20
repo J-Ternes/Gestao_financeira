@@ -1,5 +1,7 @@
 package com.jonathandev.gestao_financeira.hendler;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.jonathandev.gestao_financeira.dtos.ErrorResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.*;
 import org.apache.coyote.Response;
@@ -37,5 +39,15 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(LancamentoNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> lancamentoNotFoundHandler(LancamentoNotFoundException lancamentoNotFoundException){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(404,"Lançamento não encontrado", LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<ErrorResponseDto> tokenExpiredHandler(TokenExpiredException tokenExpiredException){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDto(401,"Sua sessão expirou. Realize o login novamente",LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity<ErrorResponseDto> invalidTokenHandler (JWTVerificationException jwtVerificationException){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDto(HttpStatus.UNAUTHORIZED.value(),"Token inválido",LocalDateTime.now()));
     }
 }

@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 @Service
 public class TokenService {
@@ -38,7 +36,7 @@ public class TokenService {
     }
 
     public JWTEmailERoleDto validarToken(String token){
-        try {
+
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             DecodedJWT decode = JWT.require(algorithm).build().verify(token);
@@ -48,11 +46,6 @@ public class TokenService {
 
             JWTEmailERoleDto emailERole = new JWTEmailERoleDto(emailJwt,roleJwt);
 
-
             return emailERole;
-
-        }catch (JWTVerificationException e){
-            throw new RuntimeException("Token JWT inválido ou expirado", e);
-        }
     }
 }
