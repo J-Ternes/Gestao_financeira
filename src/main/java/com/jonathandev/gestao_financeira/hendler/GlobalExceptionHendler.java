@@ -50,4 +50,9 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDto> invalidTokenHandler (JWTVerificationException jwtVerificationException){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDto(HttpStatus.UNAUTHORIZED.value(),"Token inválido",LocalDateTime.now()));
     }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> emailNotFoundhandler( EmailNotFoundException emailNotFoundException){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(HttpStatus.NOT_FOUND.value(), "Email não cadastrado", LocalDateTime.now()));
+    }
 }

@@ -4,6 +4,7 @@ import com.jonathandev.gestao_financeira.dtos.AuthRequestDto;
 import com.jonathandev.gestao_financeira.dtos.UserRequestDto;
 import com.jonathandev.gestao_financeira.dtos.UserResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.EmailFoundException;
+import com.jonathandev.gestao_financeira.exceptions.EmailNotFoundException;
 import com.jonathandev.gestao_financeira.exceptions.UserNotFoundException;
 import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.model.UserRole;
@@ -47,6 +48,11 @@ public class UserService {
     }
 
     public String autenticar(AuthRequestDto dados){
+
+        UserDetails usuario = userRepository.findByEmail(dados.email());
+
+        if(usuario == null) throw new EmailNotFoundException();
+
 
         UsernamePasswordAuthenticationToken emailPassword = new UsernamePasswordAuthenticationToken(dados.email(),dados.senha());
 
