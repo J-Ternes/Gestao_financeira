@@ -1,28 +1,22 @@
 package com.jonathandev.gestao_financeira.services;
 
-import com.jonathandev.gestao_financeira.dtos.CategoriaResponseDto;
 import com.jonathandev.gestao_financeira.dtos.LancamentoRequestDto;
 import com.jonathandev.gestao_financeira.dtos.LancamentoResponseDto;
 import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
 import com.jonathandev.gestao_financeira.exceptions.IncompatibleUserException;
 import com.jonathandev.gestao_financeira.exceptions.LancamentoNotFoundException;
-import com.jonathandev.gestao_financeira.exceptions.UserNotFoundException;
 import com.jonathandev.gestao_financeira.helpers.Helpers;
-import com.jonathandev.gestao_financeira.hendler.AcessoNegadoHandler;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
 import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.repositories.CategoriaRepository;
 import com.jonathandev.gestao_financeira.repositories.LancamentoRepository;
-import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.expression.AccessException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
