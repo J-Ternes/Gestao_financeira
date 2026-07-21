@@ -26,7 +26,7 @@ public class CategoriaService {
     public CategoriaModel criarCategoria(CategoriaRequestDto categoriaDto){
         CategoriaModel verificandoCategoria = categoriaRepository.findByCategoria(categoriaDto.categoria());
 
-        if(verificandoCategoria == null) throw new CategoriaNotFoundException();
+        if(verificandoCategoria != null) throw new CategoriaFoundException();
 
 
         UserModel usuario = userRepository
