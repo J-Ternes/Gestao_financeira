@@ -21,21 +21,24 @@ public class CategoriaController {
 
     private final CategoriaService categoriaService;
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @PostMapping("/inserir")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PostMapping("/inserir")
     public ResponseEntity cadastrarCategoria(@RequestBody @Valid CategoriaRequestDto categoriaDto){
         CategoriaModel categoriaCriada = categoriaService.criarCategoria(categoriaDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(categoriaCriada);
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @GetMapping("/cadastradas")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @GetMapping("/cadastradas")
     public ResponseEntity categoriasCadastradas(){
         List<CategoriaResponseDto> categorias = categoriaService.buscarTodasCategorias();
 
         return ResponseEntity.status(HttpStatus.OK).body(categorias);
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @DeleteMapping("/deletar/{id}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity delatarCategoria(@PathVariable UUID id){
         categoriaService.deletar(id);
 

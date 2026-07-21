@@ -21,7 +21,8 @@ public class LancamentoController {
 
     private final LancamentoService lancamentoService;
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @PostMapping("/novo")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PostMapping("/novo")
     public ResponseEntity novoLancamento(@RequestBody @Valid LancamentoRequestDto lancamentoDto){
 
         LancamentoResponseDto lancamento = lancamentoService.cadastrarLancamento(lancamentoDto);
@@ -29,7 +30,8 @@ public class LancamentoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(lancamento);
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @GetMapping("/cadastrados")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @GetMapping("/cadastrados")
     public ResponseEntity<PaginaResponseDto<LancamentoResponseDto>> lancamentosPaginados(@RequestParam(defaultValue = "0") int pagina,
                                                                                          @RequestParam(defaultValue = "10") int tamanho,
                                                                                          @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
@@ -39,7 +41,8 @@ public class LancamentoController {
         return ResponseEntity.status(HttpStatus.OK).body(lancamentos);
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @DeleteMapping("/deletar/{id}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity deletarLancamento(@PathVariable UUID id){
 
         lancamentoService.deletar(id);
