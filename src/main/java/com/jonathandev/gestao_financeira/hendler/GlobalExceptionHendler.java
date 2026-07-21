@@ -4,7 +4,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.jonathandev.gestao_financeira.dtos.ErrorResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.*;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,5 +53,10 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EmailNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> emailNotFoundhandler( EmailNotFoundException emailNotFoundException){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(HttpStatus.NOT_FOUND.value(), "Email não cadastrado", LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(IncompatibleUserException.class)
+    public ResponseEntity<ErrorResponseDto> acesshandler (IncompatibleUserException acessException){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponseDto(HttpStatus.FORBIDDEN.value(), "Você não tem permissão para essa ação", LocalDateTime.now()));
     }
 }

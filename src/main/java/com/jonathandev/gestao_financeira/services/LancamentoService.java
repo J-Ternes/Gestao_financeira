@@ -4,6 +4,7 @@ import com.jonathandev.gestao_financeira.dtos.LancamentoRequestDto;
 import com.jonathandev.gestao_financeira.dtos.LancamentoResponseDto;
 import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
+import com.jonathandev.gestao_financeira.exceptions.IncompatibleUserException;
 import com.jonathandev.gestao_financeira.exceptions.LancamentoNotFoundException;
 import com.jonathandev.gestao_financeira.exceptions.UserNotFoundException;
 import com.jonathandev.gestao_financeira.hendler.AcessoNegadoHandler;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.expression.AccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +80,7 @@ public class LancamentoService {
 
         LancamentoModel lancamento  = lancamentoRepository.findById(id).orElseThrow(()-> new LancamentoNotFoundException());
 
-        if (!lancamento.getUsuario().getId().equals(usuario.getId())) throw new AcessoNegadoHandler();
+        if (!lancamento.getUsuario().getId().equals(usuario.getId())) throw new IncompatibleUserException();
 
 
         lancamentoRepository.delete(lancamento);
