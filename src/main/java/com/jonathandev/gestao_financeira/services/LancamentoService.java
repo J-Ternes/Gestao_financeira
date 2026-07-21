@@ -1,5 +1,6 @@
 package com.jonathandev.gestao_financeira.services;
 
+import com.jonathandev.gestao_financeira.dtos.CategoriaResponseDto;
 import com.jonathandev.gestao_financeira.dtos.LancamentoRequestDto;
 import com.jonathandev.gestao_financeira.dtos.LancamentoResponseDto;
 import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;

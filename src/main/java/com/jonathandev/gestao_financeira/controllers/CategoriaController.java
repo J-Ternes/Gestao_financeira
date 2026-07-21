@@ -2,6 +2,7 @@ package com.jonathandev.gestao_financeira.controllers;
 
 import com.jonathandev.gestao_financeira.dtos.CategoriaRequestDto;
 import com.jonathandev.gestao_financeira.dtos.CategoriaResponseDto;
+import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.services.CategoriaService;
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ public class CategoriaController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PostMapping("/inserir")
     public ResponseEntity cadastrarCategoria(@RequestBody @Valid CategoriaRequestDto categoriaDto){
+
         CategoriaModel categoriaCriada = categoriaService.criarCategoria(categoriaDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(categoriaCriada);
@@ -31,8 +33,10 @@ public class CategoriaController {
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/cadastradas")
-    public ResponseEntity categoriasCadastradas(){
-        List<CategoriaResponseDto> categorias = categoriaService.buscarTodasCategorias();
+    public ResponseEntity<PaginaResponseDto<CategoriaResponseDto>> lancamentosPaginados(@RequestParam(defaultValue = "0") int pagina, @RequestParam(defaultValue = "10") int tamanho,
+                                                                                       @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
+
+        PaginaResponseDto<CategoriaResponseDto> categorias = categoriaService.buscarTodasCategorias(pagina,tamanho,ordenarPor);
 
         return ResponseEntity.status(HttpStatus.OK).body(categorias);
     }
