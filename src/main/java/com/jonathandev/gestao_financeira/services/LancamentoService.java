@@ -6,6 +6,7 @@ import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
 import com.jonathandev.gestao_financeira.exceptions.LancamentoNotFoundException;
 import com.jonathandev.gestao_financeira.exceptions.UserNotFoundException;
+import com.jonathandev.gestao_financeira.hendler.AcessoNegadoHandler;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
 import com.jonathandev.gestao_financeira.model.UserModel;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,14 +29,11 @@ import java.util.UUID;
 public class LancamentoService {
 
     private final LancamentoRepository lancamentoRepository;
-    private final UserRepository userRepository;
     private final CategoriaRepository categoriaRepository;
 
-    public LancamentoModel cadastrarLancamento(LancamentoRequestDto requestDto){
+    public LancamentoResponseDto cadastrarLancamento(LancamentoRequestDto requestDto){
 
-        UserModel usuario = userRepository
-                .findById(requestDto.usuarioId())
-                .orElseThrow(()->new UserNotFoundException());
+        UserModel usuario = getUsuarioAutenticado();
 
         CategoriaModel categoria = categoriaRepository
                 .findById(requestDto.categoriaId())
@@ -47,14 +46,18 @@ public class LancamentoService {
         novoLancamento.setPreco(requestDto.preco());
         novoLancamento.setTipo(requestDto.tipo());
 
-        return lancamentoRepository.save(novoLancamento);
+        LancamentoModel salvo = lancamentoRepository.save(novoLancamento);
+
+        return new LancamentoResponseDto(salvo.getPreco(),salvo.getDataLancamento(),salvo.getTipo(),salvo.getCategoria().getCategoria());
     }
 
     public PaginaResponseDto<LancamentoResponseDto> todosLancamentosPaginados(int pagina, int tamanho, String ordenarPor){
 
+        UserModel usuario = getUsuarioAutenticado();
+
         Pageable pageable = PageRequest.of(pagina,tamanho, Sort.by(Sort.Direction.DESC,ordenarPor));
 
-        Page<LancamentoModel> page = lancamentoRepository.findAll(pageable);
+        Page<LancamentoModel> page = lancamentoRepository.findByUsuarioId(usuario.getId(), pageable);
 
         List<LancamentoResponseDto> conteudo = page.getContent()
                 .stream()
@@ -69,8 +72,19 @@ public class LancamentoService {
     }
 
     public void deletar(UUID id){
+
+        UserModel usuario = getUsuarioAutenticado();
+
+
         LancamentoModel lancamento  = lancamentoRepository.findById(id).orElseThrow(()-> new LancamentoNotFoundException());
 
+        if (!lancamento.getUsuario().getId().equals(usuario.getId())) throw new AcessoNegadoHandler();
+
+
         lancamentoRepository.delete(lancamento);
+    }
+
+    private UserModel getUsuarioAutenticado() {
+        return (UserModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

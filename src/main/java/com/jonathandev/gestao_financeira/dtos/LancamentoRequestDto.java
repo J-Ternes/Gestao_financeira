@@ -12,7 +12,6 @@ public record LancamentoRequestDto(
         BigDecimal preco,
         LocalDate dataLancamento,
         TipoLancamento tipo,
-        UUID categoriaId,
-        UUID usuarioId
+        UUID categoriaId
 ) {
 }

@@ -23,9 +23,10 @@ public class LancamentoController {
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")    @PostMapping("/novo")
     public ResponseEntity novoLancamento(@RequestBody @Valid LancamentoRequestDto lancamentoDto){
-        LancamentoModel lancamento = lancamentoService.cadastrarLancamento(lancamentoDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(lancamento);
+        LancamentoResponseDto lancamento = lancamentoService.cadastrarLancamento(lancamentoDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(lancamento);
     }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")    @GetMapping("/cadastrados")
