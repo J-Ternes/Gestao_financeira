@@ -4,7 +4,6 @@ import com.jonathandev.gestao_financeira.dtos.LancamentoRequestDto;
 import com.jonathandev.gestao_financeira.dtos.LancamentoResponseDto;
 import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
-import com.jonathandev.gestao_financeira.services.RelatorioLancamentoService;
 import com.jonathandev.gestao_financeira.services.LancamentoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +21,14 @@ public class LancamentoController {
 
     private final LancamentoService lancamentoService;
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
-    @PostMapping("/novo")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @PostMapping("/novo")
     public ResponseEntity novoLancamento(@RequestBody @Valid LancamentoRequestDto lancamentoDto){
         LancamentoModel lancamento = lancamentoService.cadastrarLancamento(lancamentoDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(lancamento);
     }
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
-    @GetMapping("/cadastrados")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @GetMapping("/cadastrados")
     public ResponseEntity<PaginaResponseDto<LancamentoResponseDto>> lancamentosPaginados(@RequestParam(defaultValue = "0") int pagina,
                                                                                          @RequestParam(defaultValue = "10") int tamanho,
                                                                                          @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
@@ -41,8 +38,7 @@ public class LancamentoController {
         return ResponseEntity.status(HttpStatus.OK).body(lancamentos);
     }
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
-    @DeleteMapping("/deletar/{id}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @DeleteMapping("/deletar/{id}")
     public ResponseEntity deletarLancamento(@PathVariable UUID id){
 
         lancamentoService.deletar(id);

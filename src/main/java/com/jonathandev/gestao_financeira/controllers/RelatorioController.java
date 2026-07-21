@@ -17,8 +17,7 @@ public class RelatorioController {
 
     private final RelatorioLancamentoService relatorioLancamentoService;
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
-    @GetMapping("/{categoria}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @GetMapping("/{categoria}")
     public ResponseEntity<PaginaResponseDto<RelatorioLancamentoResponseDto>> mostrarLancamentosPorCategoria(@PathVariable String categoria,
                                                                             @RequestParam(defaultValue = "0") int pagina,
                                                                             @RequestParam(defaultValue = "10") int tamanho,
@@ -29,8 +28,7 @@ public class RelatorioController {
         return ResponseEntity.status(HttpStatus.OK).body(lancamentosPorCategoria);
     }
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
-    @GetMapping("/total/{categoria}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")    @GetMapping("/total/{categoria}")
     public ResponseEntity totalGastoPorCategoria(@PathVariable String categoria){
         ValorTotalPorCategoriaResponseDto valorTotalPorCategoriaResponseDto =  relatorioLancamentoService.calcularTotalPorCategoria(categoria);
 
