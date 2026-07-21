@@ -7,6 +7,7 @@ import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
 import com.jonathandev.gestao_financeira.exceptions.IncompatibleUserException;
 import com.jonathandev.gestao_financeira.exceptions.LancamentoNotFoundException;
 import com.jonathandev.gestao_financeira.exceptions.UserNotFoundException;
+import com.jonathandev.gestao_financeira.helpers.Helpers;
 import com.jonathandev.gestao_financeira.hendler.AcessoNegadoHandler;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
@@ -32,10 +33,11 @@ public class LancamentoService {
 
     private final LancamentoRepository lancamentoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final Helpers helpers;
 
     public LancamentoResponseDto cadastrarLancamento(LancamentoRequestDto requestDto){
 
-        UserModel usuario = getUsuarioAutenticado();
+        UserModel usuario = helpers.getUsuarioAutenticado();
 
         CategoriaModel categoria = categoriaRepository
                 .findById(requestDto.categoriaId())
@@ -55,7 +57,7 @@ public class LancamentoService {
 
     public PaginaResponseDto<LancamentoResponseDto> todosLancamentosPaginados(int pagina, int tamanho, String ordenarPor){
 
-        UserModel usuario = getUsuarioAutenticado();
+        UserModel usuario = helpers.getUsuarioAutenticado();
 
         Pageable pageable = PageRequest.of(pagina,tamanho, Sort.by(Sort.Direction.DESC,ordenarPor));
 
@@ -75,7 +77,7 @@ public class LancamentoService {
 
     public void deletar(UUID id){
 
-        UserModel usuario = getUsuarioAutenticado();
+        UserModel usuario = helpers.getUsuarioAutenticado();
 
 
         LancamentoModel lancamento  = lancamentoRepository.findById(id).orElseThrow(()-> new LancamentoNotFoundException());
@@ -84,9 +86,5 @@ public class LancamentoService {
 
 
         lancamentoRepository.delete(lancamento);
-    }
-
-    private UserModel getUsuarioAutenticado() {
-        return (UserModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
