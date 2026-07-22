@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -33,7 +31,7 @@ public class CategoriaController {
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/cadastradas")
-    public ResponseEntity<PaginaResponseDto<CategoriaResponseDto>> lancamentosPaginados(@RequestParam(defaultValue = "0") int pagina, @RequestParam(defaultValue = "10") int tamanho,
+    public ResponseEntity<PaginaResponseDto<CategoriaResponseDto>> categoriasPaginadas(@RequestParam(defaultValue = "0") int pagina, @RequestParam(defaultValue = "10") int tamanho,
                                                                                        @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
 
         PaginaResponseDto<CategoriaResponseDto> categorias = categoriaService.buscarTodasCategorias(pagina,tamanho,ordenarPor);
