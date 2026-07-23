@@ -1,5 +1,6 @@
 package com.jonathandev.gestao_financeira.services;
 
+import com.jonathandev.gestao_financeira.constants.PaginacaoConstantes;
 import com.jonathandev.gestao_financeira.dtos.CategoriaRequestDto;
 import com.jonathandev.gestao_financeira.dtos.CategoriaResponseDto;
 import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
@@ -30,6 +31,7 @@ public class CategoriaService {
     private final UserRepository userRepository;
     private final Helpers helpers;
 
+
     public CategoriaResponseDto criarCategoria(CategoriaRequestDto categoriaDto){
 
         CategoriaModel verificandoCategoria = categoriaRepository.findByCategoria(categoriaDto.categoria());
@@ -48,11 +50,11 @@ public class CategoriaService {
         return new CategoriaResponseDto(novaCategoria.getCategoria());
     }
 
-    public PaginaResponseDto<CategoriaResponseDto> buscarTodasCategorias(int pagina, int tamanho, String ordenarPor){
+    public PaginaResponseDto<CategoriaResponseDto> buscarTodasCategorias(int pagina, String ordenarPor){
 
         UserModel usuario = helpers.getUsuarioAutenticado();
 
-        Pageable pageable = PageRequest.of(pagina,tamanho, Sort.by(Sort.Direction.DESC,ordenarPor));
+        Pageable pageable = PageRequest.of(pagina, PaginacaoConstantes.TAMANHO_PAGINA, Sort.by(Sort.Direction.DESC,ordenarPor));
 
         Page<CategoriaModel> page = categoriaRepository.findByUsuarioId(usuario.getId(), pageable);
 

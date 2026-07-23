@@ -31,10 +31,10 @@ public class CategoriaController {
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/cadastradas")
-    public ResponseEntity<PaginaResponseDto<CategoriaResponseDto>> categoriasPaginadas(@RequestParam(defaultValue = "0") int pagina, @RequestParam(defaultValue = "10") int tamanho,
+    public ResponseEntity<PaginaResponseDto<CategoriaResponseDto>> categoriasPaginadas(@RequestParam(defaultValue = "0") int pagina,
                                                                                        @RequestParam(defaultValue = "criadoEm") String ordenarPor){
 
-        PaginaResponseDto<CategoriaResponseDto> categorias = categoriaService.buscarTodasCategorias(pagina,tamanho,ordenarPor);
+        PaginaResponseDto<CategoriaResponseDto> categorias = categoriaService.buscarTodasCategorias(pagina,ordenarPor);
 
         return ResponseEntity.status(HttpStatus.OK).body(categorias);
     }
