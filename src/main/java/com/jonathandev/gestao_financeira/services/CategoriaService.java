@@ -30,7 +30,7 @@ public class CategoriaService {
     private final UserRepository userRepository;
     private final Helpers helpers;
 
-    public CategoriaModel criarCategoria(CategoriaRequestDto categoriaDto){
+    public CategoriaResponseDto criarCategoria(CategoriaRequestDto categoriaDto){
 
         CategoriaModel verificandoCategoria = categoriaRepository.findByCategoria(categoriaDto.categoria());
 
@@ -43,7 +43,9 @@ public class CategoriaService {
         novaCategoria.setCategoria(categoriaDto.categoria());
         novaCategoria.setUsuario(usuario);
 
-        return categoriaRepository.save(novaCategoria);
+        CategoriaModel salvo = categoriaRepository.save(novaCategoria);
+
+        return new CategoriaResponseDto(novaCategoria.getCategoria());
     }
 
     public PaginaResponseDto<CategoriaResponseDto> buscarTodasCategorias(int pagina, int tamanho, String ordenarPor){
