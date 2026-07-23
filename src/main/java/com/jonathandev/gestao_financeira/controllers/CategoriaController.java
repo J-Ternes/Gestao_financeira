@@ -26,7 +26,7 @@ public class CategoriaController {
 
         CategoriaResponseDto categoriaCriada = categoriaService.criarCategoria(categoriaDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(categoriaCriada);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaCriada);
     }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
