@@ -33,10 +33,9 @@ public class LancamentoController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/cadastrados")
     public ResponseEntity<PaginaResponseDto<LancamentoResponseDto>> lancamentosPaginados(@RequestParam(defaultValue = "0") int pagina,
-                                                                                         @RequestParam(defaultValue = "10") int tamanho,
                                                                                          @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
 
-        PaginaResponseDto<LancamentoResponseDto> lancamentos = lancamentoService.todosLancamentosPaginados(pagina,tamanho,ordenarPor);
+        PaginaResponseDto<LancamentoResponseDto> lancamentos = lancamentoService.todosLancamentosPaginados(pagina,ordenarPor);
 
         return ResponseEntity.status(HttpStatus.OK).body(lancamentos);
     }

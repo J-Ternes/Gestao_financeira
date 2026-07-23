@@ -1,5 +1,6 @@
 package com.jonathandev.gestao_financeira.services;
 
+import com.jonathandev.gestao_financeira.constants.PaginacaoConstantes;
 import com.jonathandev.gestao_financeira.dtos.LancamentoRequestDto;
 import com.jonathandev.gestao_financeira.dtos.LancamentoResponseDto;
 import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
@@ -50,11 +51,11 @@ public class LancamentoService {
         return new LancamentoResponseDto(salvo.getPreco(),salvo.getDataLancamento(),salvo.getTipo(),salvo.getCategoria().getCategoria());
     }
 
-    public PaginaResponseDto<LancamentoResponseDto> todosLancamentosPaginados(int pagina, int tamanho, String ordenarPor){
+    public PaginaResponseDto<LancamentoResponseDto> todosLancamentosPaginados(int pagina, String ordenarPor){
 
         UserModel usuario = helpers.getUsuarioAutenticado();
 
-        Pageable pageable = PageRequest.of(pagina,tamanho, Sort.by(Sort.Direction.DESC,ordenarPor));
+        Pageable pageable = PageRequest.of(pagina, PaginacaoConstantes.TAMANHO_PAGINA, Sort.by(Sort.Direction.DESC,ordenarPor));
 
         Page<LancamentoModel> page = lancamentoRepository.findByUsuarioId(usuario.getId(), pageable);
 
