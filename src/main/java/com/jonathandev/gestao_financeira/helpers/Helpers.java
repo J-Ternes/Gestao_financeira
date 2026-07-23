@@ -5,9 +5,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Helpers {
+public final class Helpers {
 
-    public UserModel getUsuarioAutenticado() {
+    private Helpers(){} //Não instanciar
+
+    public static UserModel getUsuarioAutenticado() {
         return (UserModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

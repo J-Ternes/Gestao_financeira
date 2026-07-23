@@ -8,6 +8,7 @@ import com.jonathandev.gestao_financeira.exceptions.CategoriaFoundException;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
 import com.jonathandev.gestao_financeira.exceptions.IncompatibleUserException;
 import com.jonathandev.gestao_financeira.helpers.Helpers;
+import com.jonathandev.gestao_financeira.helpers.PaginacaoUtils;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.repositories.CategoriaRepository;
@@ -53,6 +54,8 @@ public class CategoriaService {
     public PaginaResponseDto<CategoriaResponseDto> buscarTodasCategorias(int pagina, String ordenarPor){
 
         UserModel usuario = helpers.getUsuarioAutenticado();
+
+        PaginacaoUtils.validarNumeroPaginas(pagina);
 
         Pageable pageable = PageRequest.of(pagina, PaginacaoConstantes.TAMANHO_PAGINA, Sort.by(Sort.Direction.DESC,ordenarPor));
 
