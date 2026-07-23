@@ -59,4 +59,11 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDto> acesshandler (IncompatibleUserException acessException){
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponseDto(HttpStatus.FORBIDDEN.value(), "Você não tem permissão para essa ação", LocalDateTime.now()));
     }
+
+    @ExceptionHandler(ParametroInvalidoException.class)
+    public ResponseEntity<ErrorResponseDto> handleParametroInvalido(ParametroInvalidoException parametroInvalidoException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(HttpStatus.BAD_REQUEST.value(),"Não foi possível realizar a sua requisição", LocalDateTime.now()));
+    }
+
+
 }
