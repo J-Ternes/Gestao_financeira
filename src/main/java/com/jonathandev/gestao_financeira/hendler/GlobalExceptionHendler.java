@@ -62,7 +62,7 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ParametroInvalidoException.class)
     public ResponseEntity<ErrorResponseDto> handleParametroInvalido(ParametroInvalidoException parametroInvalidoException) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(HttpStatus.BAD_REQUEST.value(),"Não foi possível realizar a sua requisição", LocalDateTime.now()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(HttpStatus.BAD_REQUEST.value(),parametroInvalidoException.getMessage(), LocalDateTime.now()));
     }
 
 
