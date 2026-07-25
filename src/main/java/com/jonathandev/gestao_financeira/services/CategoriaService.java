@@ -35,12 +35,14 @@ public class CategoriaService {
 
     public CategoriaResponseDto criarCategoria(CategoriaRequestDto categoriaDto){
 
-        CategoriaModel verificandoCategoria = categoriaRepository.findByCategoria(categoriaDto.categoria());
+        UserModel usuario = helpers.getUsuarioAutenticado();
+
+        CategoriaModel verificandoCategoria = categoriaRepository.findByCategoriaAndUsuarioId(categoriaDto.categoria(),usuario.getId());
+
+        if (!categoriaDto.usuarioId().equals(usuario.getId())) throw new IncompatibleUserException();
 
         if(verificandoCategoria != null) throw new CategoriaFoundException();
 
-
-        UserModel usuario = helpers.getUsuarioAutenticado();
 
         CategoriaModel novaCategoria = new CategoriaModel();
         novaCategoria.setCategoria(categoriaDto.categoria());

@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public interface CategoriaRepository extends JpaRepository<CategoriaModel, UUID> {
 
+     CategoriaModel findByCategoriaAndUsuarioId(String categoria, UUID id);
+
      CategoriaModel findByCategoria(String categoria);
 
      Page<CategoriaModel> findByUsuarioId(UUID usuarioId, Pageable pageable);
