@@ -58,7 +58,7 @@ public class CategoriaService {
         PaginacaoUtils.validarNumeroPaginas(pagina);
         PaginacaoUtils.validarOrdenarPor(ordenarPor);
 
-        Pageable pageable = PageRequest.of(pagina, PaginacaoConstantes.TAMANHO_PAGINA, Sort.by(Sort.Direction.DESC,ordenarPor));
+        Pageable pageable = PageRequest.of(pagina, PaginacaoConstantes.TAMANHO_PAGINA, Sort.by(Sort.Direction.ASC,ordenarPor));
 
         Page<CategoriaModel> page = categoriaRepository.findByUsuarioId(usuario.getId(), pageable);
 
