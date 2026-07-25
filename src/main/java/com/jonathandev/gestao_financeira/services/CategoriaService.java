@@ -55,10 +55,10 @@ public class CategoriaService {
 
     public PaginaResponseDto<CategoriaResponseDto> buscarTodasCategorias(int pagina, String ordenarPor){
 
-        UserModel usuario = helpers.getUsuarioAutenticado();
-
         PaginacaoUtils.validarNumeroPaginas(pagina);
         PaginacaoUtils.validarOrdenarPor(ordenarPor);
+
+        UserModel usuario = helpers.getUsuarioAutenticado();
 
         Pageable pageable = PageRequest.of(pagina, PaginacaoConstantes.TAMANHO_PAGINA, Sort.by(Sort.Direction.ASC,ordenarPor));
 

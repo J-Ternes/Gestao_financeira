@@ -1,9 +1,13 @@
 package com.jonathandev.gestao_financeira.services;
 
+import com.jonathandev.gestao_financeira.constants.PaginacaoConstantes;
 import com.jonathandev.gestao_financeira.dtos.*;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
+import com.jonathandev.gestao_financeira.helpers.Helpers;
+import com.jonathandev.gestao_financeira.helpers.PaginacaoUtils;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
+import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.repositories.CategoriaRepository;
 import com.jonathandev.gestao_financeira.repositories.LancamentoRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,28 +26,35 @@ public class RelatorioLancamentoService {
 
     private final LancamentoRepository lancamentoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final Helpers helpers;
 
     public ValorTotalPorCategoriaResponseDto calcularTotalPorCategoria(String nomeCategoria){
 
-        CategoriaModel verificandoCategoria = categoriaRepository.findByCategoria(nomeCategoria);
+        UserModel usuario = helpers.getUsuarioAutenticado();
 
-       if(verificandoCategoria == null) throw new CategoriaNotFoundException();
+        CategoriaModel categoria = categoriaRepository.findByCategoriaAndUsuarioId(nomeCategoria, usuario.getId());
 
-        BigDecimal totalGasto = lancamentoRepository.calcularTotalPorCategoria(nomeCategoria);
+       if(categoria == null) throw new CategoriaNotFoundException();
+
+        BigDecimal totalGasto = lancamentoRepository.calcularTotalPorCategoriaAndUsuario(nomeCategoria,usuario.getId());
 
         return new ValorTotalPorCategoriaResponseDto(nomeCategoria,totalGasto);
     }
 
 
-    public PaginaResponseDto<RelatorioLancamentoResponseDto> historicoDeGastoPorCategoria(String nomeCategoria, int pagina, int tamanho, String ordenarPor){
+    public PaginaResponseDto<RelatorioLancamentoResponseDto> historicoDeGastoPorCategoria(String nomeCategoria, int pagina, String ordenarPor){
 
-        CategoriaModel categoria = categoriaRepository.findByCategoria(nomeCategoria);
+        PaginacaoUtils.validarNumeroPaginas(pagina);
+
+        UserModel usuario = helpers.getUsuarioAutenticado();
+
+        CategoriaModel categoria = categoriaRepository.findByCategoriaAndUsuarioId(nomeCategoria, usuario.getId());
 
         if(categoria == null) throw new CategoriaNotFoundException();
 
-        Pageable pageable = PageRequest.of(pagina,tamanho, Sort.by(Sort.Direction.DESC,ordenarPor));
+        Pageable pageable = PageRequest.of(pagina, PaginacaoConstantes.TAMANHO_PAGINA, Sort.by(Sort.Direction.ASC,ordenarPor));
 
-         Page<LancamentoModel> page = lancamentoRepository.findByCategoriaNomePaginado(nomeCategoria, pageable);
+         Page<LancamentoModel> page = lancamentoRepository.findByCategoriaAndUsuarioNomePaginado(nomeCategoria, usuario.getId(), pageable);
 
         //Crio o resumo de cada lancamento com o preco e a data
         List<LancamentoResumoDto> resumo = page.getContent()

@@ -21,10 +21,9 @@ public class RelatorioController {
     @GetMapping("/{categoria}")
     public ResponseEntity<PaginaResponseDto<RelatorioLancamentoResponseDto>> mostrarLancamentosPorCategoria(@PathVariable String categoria,
                                                                             @RequestParam(defaultValue = "0") int pagina,
-                                                                            @RequestParam(defaultValue = "10") int tamanho,
                                                                             @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
 
-       PaginaResponseDto lancamentosPorCategoria =  relatorioLancamentoService.historicoDeGastoPorCategoria(categoria,pagina,tamanho,ordenarPor);
+       PaginaResponseDto lancamentosPorCategoria =  relatorioLancamentoService.historicoDeGastoPorCategoria(categoria,pagina,ordenarPor);
 
         return ResponseEntity.status(HttpStatus.OK).body(lancamentosPorCategoria);
     }
