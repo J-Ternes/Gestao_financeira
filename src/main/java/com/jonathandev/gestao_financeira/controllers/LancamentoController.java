@@ -3,7 +3,6 @@ package com.jonathandev.gestao_financeira.controllers;
 import com.jonathandev.gestao_financeira.dtos.LancamentoRequestDto;
 import com.jonathandev.gestao_financeira.dtos.LancamentoResponseDto;
 import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
-import com.jonathandev.gestao_financeira.model.LancamentoModel;
 import com.jonathandev.gestao_financeira.services.LancamentoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

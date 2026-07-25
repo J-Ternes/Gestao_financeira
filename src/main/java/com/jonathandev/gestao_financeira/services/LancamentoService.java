@@ -83,7 +83,6 @@ public class LancamentoService {
 
         if (!lancamento.getUsuario().getId().equals(usuario.getId())) throw new IncompatibleUserException();
 
-
         lancamentoRepository.delete(lancamento);
     }
 }
