@@ -65,5 +65,10 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(HttpStatus.BAD_REQUEST.value(),parametroInvalidoException.getMessage(), LocalDateTime.now()));
     }
 
+    @ExceptionHandler(LoginInvalidoException.class)
+    public ResponseEntity<ErrorResponseDto> loginInvalidoHandler(LoginInvalidoException loginInvalidoException){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDto(HttpStatus.UNAUTHORIZED.value(),"Email ou senha inválido",LocalDateTime.now()));
+    }
+
 
 }

@@ -5,6 +5,7 @@ import com.jonathandev.gestao_financeira.dtos.UserRequestDto;
 import com.jonathandev.gestao_financeira.dtos.UserResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.EmailFoundException;
 import com.jonathandev.gestao_financeira.exceptions.EmailNotFoundException;
+import com.jonathandev.gestao_financeira.exceptions.LoginInvalidoException;
 import com.jonathandev.gestao_financeira.exceptions.UserNotFoundException;
 import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.model.UserRole;
@@ -12,6 +13,7 @@ import com.jonathandev.gestao_financeira.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -49,18 +51,20 @@ public class UserService {
 
     public String autenticar(AuthRequestDto dados){
 
-        UserDetails usuario = userRepository.findByEmail(dados.email());
+        try {
 
-        if(usuario == null) throw new EmailNotFoundException();
+            UsernamePasswordAuthenticationToken emailPassword = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
 
+            var auth = authenticationManager.authenticate(emailPassword);
 
-        UsernamePasswordAuthenticationToken emailPassword = new UsernamePasswordAuthenticationToken(dados.email(),dados.senha());
+            //if(auth == null) throw new LoginInvalidoException();
 
-        var auth = authenticationManager.authenticate(emailPassword);
+            String token = tokenService.gerarToken((UserModel) auth.getPrincipal());
 
-        String token = tokenService.gerarToken((UserModel) auth.getPrincipal());
-
-        return token;
+            return token;
+        }catch (BadCredentialsException e){
+            throw new LoginInvalidoException();
+        }
     }
 
     public List<UserResponseDto> usuariosCadastrados (){
