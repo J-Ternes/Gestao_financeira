@@ -23,7 +23,7 @@ public final class PaginacaoUtils {
 
         normalizarOrdenarPor(ordenarPor); //Para normalizar e ser ignoraseCase
 
-        List<String> camposPermitidos = List.of("categoria", "criadoEm");
+        List<String> camposPermitidos = List.of("categoria", "criadoEm","preco","tipo","dataLancamento");
 
         boolean valido = camposPermitidos.stream()
                 .anyMatch(campo -> campo.equals(ordenarPor));
