@@ -3,6 +3,7 @@ package com.jonathandev.gestao_financeira.services;
 import com.jonathandev.gestao_financeira.constants.PaginacaoConstantes;
 import com.jonathandev.gestao_financeira.dtos.*;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
+import com.jonathandev.gestao_financeira.exceptions.LancamentoNotFoundException;
 import com.jonathandev.gestao_financeira.helpers.Helpers;
 import com.jonathandev.gestao_financeira.helpers.PaginacaoUtils;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
@@ -70,5 +71,16 @@ public class RelatorioLancamentoService {
         );
 
         return new PaginaResponseDto(conteudo,page.getNumber(),page.getSize(),page.getTotalElements(),page.getTotalPages());
+    }
+
+    public List<ValorTotalPorCategoriaResponseDto> calcularTotalDeTodasCategorias() {
+
+        UserModel usuario = helpers.getUsuarioAutenticado();
+
+        List<ValorTotalPorCategoriaResponseDto> totais = lancamentoRepository.calcularTotalPorTodasCategorias(usuario.getId());
+
+        if (totais.isEmpty()) throw new LancamentoNotFoundException();
+
+        return totais;
     }
 }
