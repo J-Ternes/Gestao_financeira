@@ -1,5 +1,6 @@
 package com.jonathandev.gestao_financeira.repositories;
 
+import com.jonathandev.gestao_financeira.dtos.TotalPorTipoDto;
 import com.jonathandev.gestao_financeira.dtos.ValorTotalPorCategoriaResponseDto;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
 import com.jonathandev.gestao_financeira.model.TipoLancamento;
@@ -29,5 +30,8 @@ public interface LancamentoRepository extends JpaRepository<LancamentoModel, UUI
 
     @Query("SELECT l FROM LancamentoModel l " + "WHERE l.usuario.id = :usuarioId " + "AND (:tipo IS NULL OR l.tipo = :tipo)")
     Page<LancamentoModel> findByUsuarioIdComFiltro(@Param("usuarioId") UUID usuarioId, @Param("tipo") TipoLancamento tipo, Pageable pageable);
+
+    @Query("SELECT new com.jonathandev.gestao_financeira.dtos.TotalPorTipoDto(l.tipo, SUM(l.preco)) " + "FROM LancamentoModel l " + "WHERE l.usuario.id = :usuarioId " + "GROUP BY l.tipo")
+    List<TotalPorTipoDto> calcularTotaisPorTipo(@Param("usuarioId") UUID usuarioId);
 
 }

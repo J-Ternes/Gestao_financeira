@@ -4,10 +4,12 @@ import com.jonathandev.gestao_financeira.constants.PaginacaoConstantes;
 import com.jonathandev.gestao_financeira.dtos.*;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
 import com.jonathandev.gestao_financeira.exceptions.LancamentoNotFoundException;
+import com.jonathandev.gestao_financeira.helpers.BuscaNoBanco;
 import com.jonathandev.gestao_financeira.helpers.Helpers;
 import com.jonathandev.gestao_financeira.helpers.PaginacaoUtils;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
+import com.jonathandev.gestao_financeira.model.TipoLancamento;
 import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.repositories.CategoriaRepository;
 import com.jonathandev.gestao_financeira.repositories.LancamentoRepository;
@@ -28,6 +30,7 @@ public class RelatorioLancamentoService {
     private final LancamentoRepository lancamentoRepository;
     private final CategoriaRepository categoriaRepository;
     private final Helpers helpers;
+    private final BuscaNoBanco buscaNoBanco;
 
     public ValorTotalPorCategoriaResponseDto calcularTotalPorCategoria(String nomeCategoria){
 
@@ -82,5 +85,20 @@ public class RelatorioLancamentoService {
         if (totais.isEmpty()) throw new LancamentoNotFoundException();
 
         return totais;
+    }
+
+    public SaldoGeralResponseDto calcularSaldoGeral() {
+
+        UserModel usuario = helpers.getUsuarioAutenticado();
+
+        List<TotalPorTipoDto> totais = lancamentoRepository.calcularTotaisPorTipo(usuario.getId());
+
+        BigDecimal receitas = buscaNoBanco.buscarTotal(totais, TipoLancamento.RECEITA);
+        BigDecimal despesas = buscaNoBanco. buscarTotal(totais, TipoLancamento.DESPESA);
+        BigDecimal investimentos = buscaNoBanco.buscarTotal(totais, TipoLancamento.INVESTIMENTO);
+
+        BigDecimal saldoFinal = receitas.subtract(despesas).subtract(investimentos);
+
+        return new SaldoGeralResponseDto(receitas, despesas, investimentos, saldoFinal);
     }
 }

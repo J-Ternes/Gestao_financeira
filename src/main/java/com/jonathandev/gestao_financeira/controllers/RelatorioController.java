@@ -2,6 +2,7 @@ package com.jonathandev.gestao_financeira.controllers;
 
 import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
 import com.jonathandev.gestao_financeira.dtos.RelatorioLancamentoResponseDto;
+import com.jonathandev.gestao_financeira.dtos.SaldoGeralResponseDto;
 import com.jonathandev.gestao_financeira.dtos.ValorTotalPorCategoriaResponseDto;
 import com.jonathandev.gestao_financeira.services.RelatorioLancamentoService;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,14 @@ public class RelatorioController {
         List<ValorTotalPorCategoriaResponseDto> totais = relatorioLancamentoService.calcularTotalDeTodasCategorias();
 
         return ResponseEntity.status(HttpStatus.OK).body(totais);
+    }
+
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @GetMapping("/saldo")
+    public ResponseEntity<SaldoGeralResponseDto> obterSaldoGeral() {
+
+        SaldoGeralResponseDto saldo = relatorioLancamentoService.calcularSaldoGeral();
+
+        return ResponseEntity.status(HttpStatus.OK).body(saldo);
     }
 }
