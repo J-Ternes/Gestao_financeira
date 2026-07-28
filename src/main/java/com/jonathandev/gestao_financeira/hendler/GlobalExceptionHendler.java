@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
@@ -68,6 +69,12 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(LoginInvalidoException.class)
     public ResponseEntity<ErrorResponseDto> loginInvalidoHandler(LoginInvalidoException loginInvalidoException){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDto(HttpStatus.UNAUTHORIZED.value(),"Email ou senha inválido",LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponseDto> handleTipoInvalido(MethodArgumentTypeMismatchException ex) {
+        String mensagem = String.format("Valor '%s' inválido para o parâmetro '%s'.", ex.getValue(), ex.getName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(HttpStatus.BAD_REQUEST.value(), mensagem, LocalDateTime.now()));
     }
 
 
