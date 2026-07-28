@@ -38,7 +38,7 @@ public class LancamentoService {
         UserModel usuario = helpers.getUsuarioAutenticado();
 
         CategoriaModel categoria = categoriaRepository
-                .findById(requestDto.categoriaId())
+                .findByIdAndUsuarioId(requestDto.categoriaId(), usuario.getId())
                 .orElseThrow(()-> new CategoriaNotFoundException());
 
         LancamentoModel novoLancamento = new LancamentoModel();

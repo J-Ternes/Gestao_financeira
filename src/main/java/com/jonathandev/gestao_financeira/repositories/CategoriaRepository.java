@@ -4,11 +4,15 @@ import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CategoriaRepository extends JpaRepository<CategoriaModel, UUID> {
 
      CategoriaModel findByCategoriaAndUsuarioId(String categoria, UUID id);
+
+     Optional<CategoriaModel> findByIdAndUsuarioId(UUID id, UUID usuarioId);
 
      CategoriaModel findByCategoria(String categoria);
 
