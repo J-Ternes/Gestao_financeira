@@ -3,6 +3,7 @@ package com.jonathandev.gestao_financeira.controllers;
 import com.jonathandev.gestao_financeira.dtos.LancamentoRequestDto;
 import com.jonathandev.gestao_financeira.dtos.LancamentoResponseDto;
 import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
+import com.jonathandev.gestao_financeira.model.TipoLancamento;
 import com.jonathandev.gestao_financeira.services.LancamentoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,10 @@ public class LancamentoController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/cadastrados")
     public ResponseEntity<PaginaResponseDto<LancamentoResponseDto>> lancamentosPaginados(@RequestParam(defaultValue = "0") int pagina,
-                                                                                         @RequestParam(defaultValue = "dataLancamento") String ordenarPor){
+                                                                                         @RequestParam(defaultValue = "dataLancamento") String ordenarPor,
+                                                                                         @RequestParam(required = false) TipoLancamento tipoLancamento){
 
-        PaginaResponseDto<LancamentoResponseDto> lancamentos = lancamentoService.todosLancamentosPaginados(pagina,ordenarPor);
+        PaginaResponseDto<LancamentoResponseDto> lancamentos = lancamentoService.todosLancamentosPaginados(pagina,ordenarPor,tipoLancamento);
 
         return ResponseEntity.status(HttpStatus.OK).body(lancamentos);
     }

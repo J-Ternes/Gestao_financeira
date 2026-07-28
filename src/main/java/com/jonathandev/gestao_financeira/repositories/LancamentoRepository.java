@@ -2,6 +2,7 @@ package com.jonathandev.gestao_financeira.repositories;
 
 import com.jonathandev.gestao_financeira.dtos.ValorTotalPorCategoriaResponseDto;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
+import com.jonathandev.gestao_financeira.model.TipoLancamento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,10 +23,11 @@ public interface LancamentoRepository extends JpaRepository<LancamentoModel, UUI
     @Query("SELECT SUM(l.preco) FROM LancamentoModel l WHERE l.categoria.categoria = :nomeCategoria AND l.usuario.id = :usuarioId")
     BigDecimal calcularTotalPorCategoriaAndUsuario(@Param("nomeCategoria") String nomeCategoria, UUID usuarioId);
 
-    @Query("SELECT new com.jonathandev.gestao_financeira.dtos.ValorTotalPorCategoriaResponseDto(l.categoria.categoria, SUM(l.preco)) " +
-            "FROM LancamentoModel l " +
-            "WHERE l.usuario.id = :usuarioId " +
+    @Query("SELECT new com.jonathandev.gestao_financeira.dtos.ValorTotalPorCategoriaResponseDto(l.categoria.categoria, SUM(l.preco)) " + "FROM LancamentoModel l " + "WHERE l.usuario.id = :usuarioId " +
             "GROUP BY l.categoria.categoria")
     List<ValorTotalPorCategoriaResponseDto> calcularTotalPorTodasCategorias(@Param("usuarioId") UUID usuarioId);
+
+    @Query("SELECT l FROM LancamentoModel l " + "WHERE l.usuario.id = :usuarioId " + "AND (:tipo IS NULL OR l.tipo = :tipo)")
+    Page<LancamentoModel> findByUsuarioIdComFiltro(@Param("usuarioId") UUID usuarioId, @Param("tipo") TipoLancamento tipo, Pageable pageable);
 
 }

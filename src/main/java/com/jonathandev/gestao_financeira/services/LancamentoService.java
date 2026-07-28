@@ -11,6 +11,7 @@ import com.jonathandev.gestao_financeira.helpers.Helpers;
 import com.jonathandev.gestao_financeira.helpers.PaginacaoUtils;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.LancamentoModel;
+import com.jonathandev.gestao_financeira.model.TipoLancamento;
 import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.repositories.CategoriaRepository;
 import com.jonathandev.gestao_financeira.repositories.LancamentoRepository;
@@ -52,16 +53,16 @@ public class LancamentoService {
         return new LancamentoResponseDto(salvo.getPreco(),salvo.getDataLancamento(),salvo.getTipo(),salvo.getCategoria().getCategoria());
     }
 
-    public PaginaResponseDto<LancamentoResponseDto> todosLancamentosPaginados(int pagina, String ordenarPor){
+    public PaginaResponseDto<LancamentoResponseDto> todosLancamentosPaginados(int pagina, String ordenarPor, TipoLancamento tipo){
 
         UserModel usuario = helpers.getUsuarioAutenticado();
 
         PaginacaoUtils.validarNumeroPaginas(pagina);
         PaginacaoUtils.validarOrdenarPor(ordenarPor);
 
-        Pageable pageable = PageRequest.of(pagina, PaginacaoConstantes.TAMANHO_PAGINA, Sort.by(Sort.Direction.DESC,ordenarPor));
+        Pageable pageable = PageRequest.of(pagina, PaginacaoConstantes.TAMANHO_PAGINA, Sort.by(Sort.Direction.ASC,ordenarPor));
 
-        Page<LancamentoModel> page = lancamentoRepository.findByUsuarioId(usuario.getId(), pageable);
+        Page<LancamentoModel> page = lancamentoRepository.findByUsuarioIdComFiltro(usuario.getId(),tipo, pageable);
 
         List<LancamentoResponseDto> conteudo = page.getContent()
                 .stream()
