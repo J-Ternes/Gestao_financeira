@@ -55,8 +55,6 @@ public class UserService {
 
             var auth = authenticationManager.authenticate(emailPassword);
 
-            //if(auth == null) throw new LoginInvalidoException();
-
             String token = tokenService.gerarToken((UserModel) auth.getPrincipal());
 
             return token;

@@ -16,6 +16,10 @@ public class AuthService implements UserDetailsService {
     //Esse meetodo faz com que o Spring Security verifique o BD dos nossos usuários
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username);
+        UserDetails usuario = userRepository.findByEmail(username);
+
+        if (usuario == null) throw new UsernameNotFoundException("Usuário não encontrado");
+
+        return usuario;
     }
 }
