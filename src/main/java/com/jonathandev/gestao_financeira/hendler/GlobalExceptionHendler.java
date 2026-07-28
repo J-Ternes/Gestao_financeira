@@ -6,6 +6,7 @@ import com.jonathandev.gestao_financeira.dtos.ErrorResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -66,8 +67,8 @@ public class GlobalExceptionHendler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(HttpStatus.BAD_REQUEST.value(),parametroInvalidoException.getMessage(), LocalDateTime.now()));
     }
 
-    @ExceptionHandler(LoginInvalidoException.class)
-    public ResponseEntity<ErrorResponseDto> loginInvalidoHandler(LoginInvalidoException loginInvalidoException){
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponseDto> loginInvalidoHandler(BadCredentialsException ex){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDto(HttpStatus.UNAUTHORIZED.value(),"Email ou senha inválido",LocalDateTime.now()));
     }
 

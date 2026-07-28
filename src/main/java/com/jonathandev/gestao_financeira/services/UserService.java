@@ -51,8 +51,6 @@ public class UserService {
 
     public String autenticar(AuthRequestDto dados){
 
-        try {
-
             UsernamePasswordAuthenticationToken emailPassword = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
 
             var auth = authenticationManager.authenticate(emailPassword);
@@ -62,9 +60,7 @@ public class UserService {
             String token = tokenService.gerarToken((UserModel) auth.getPrincipal());
 
             return token;
-        }catch (BadCredentialsException e){
-            throw new LoginInvalidoException();
-        }
+
     }
 
     public List<UserResponseDto> usuariosCadastrados (){
