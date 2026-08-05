@@ -1,4 +1,4 @@
-package com.jonathandev.gestao_financeira.helpers;
+package com.jonathandev.gestao_financeira.utilities;
 
 import com.jonathandev.gestao_financeira.model.UserModel;
 import org.springframework.security.core.context.SecurityContextHolder;

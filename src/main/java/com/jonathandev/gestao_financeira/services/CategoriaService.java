@@ -7,8 +7,8 @@ import com.jonathandev.gestao_financeira.dtos.PaginaResponseDto;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaFoundException;
 import com.jonathandev.gestao_financeira.exceptions.CategoriaNotFoundException;
 import com.jonathandev.gestao_financeira.exceptions.IncompatibleUserException;
-import com.jonathandev.gestao_financeira.helpers.Helpers;
-import com.jonathandev.gestao_financeira.helpers.PaginacaoUtils;
+import com.jonathandev.gestao_financeira.utilities.Helpers;
+import com.jonathandev.gestao_financeira.utilities.PaginacaoUtils;
 import com.jonathandev.gestao_financeira.model.CategoriaModel;
 import com.jonathandev.gestao_financeira.model.UserModel;
 import com.jonathandev.gestao_financeira.repositories.CategoriaRepository;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

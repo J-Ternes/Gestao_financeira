@@ -1,4 +1,4 @@
-package com.jonathandev.gestao_financeira.helpers;
+package com.jonathandev.gestao_financeira.utilities;
 
 import com.jonathandev.gestao_financeira.constants.PaginacaoConstantes;
 import com.jonathandev.gestao_financeira.exceptions.ParametroInvalidoException;
